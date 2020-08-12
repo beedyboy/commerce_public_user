@@ -1,0 +1,100 @@
+
+.publisher {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #f9fafb
+}
+
+.publisher>*:first-child {
+    margin-left: 0
+}
+
+.publisher>* {
+    margin: 0 8px
+}
+
+.publisherInput {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    border: none;
+    outline: none !important;
+    background-color: transparent
+}
+
+.form {
+    display: flex;
+    border-bottom: 2px solid #D3D3D3;
+}
+
+.input {
+    border: none;
+    border-radius: 0;
+    padding: 5%;
+    width: 80%;
+    font-size: 1.2em;
+	font-family: Roboto, sans-serif;
+    font-weight: 300
+}
+
+.input:focus{
+    outline: none
+}
+
+ 
+.publisherButton {
+    background-color: transparent;
+    border: none;
+    color: #8b95a5;
+    font-size: 16px;
+    cursor: pointer;
+    overflow: -moz-hidden-unscrollable;
+    -webkit-transition: .2s linear;
+    transition: .2s linear
+}
+
+.fileGroup {
+    position: relative;
+    overflow: hidden
+}
+
+.publisherButton {
+    background-color: transparent;
+    border: none;
+    color: #cac7c7;
+    font-size: 16px;
+    cursor: pointer;
+    overflow: -moz-hidden-unscrollable;
+    -webkit-transition: .2s linear;
+    transition: .2s linear
+}
+
+.fileGroup input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    width: 20px
+}
+.textInfo {
+    color: #48b0f7 !important
+}
+.borderLight {
+    border-color: #f1f2f3 !important
+}
+
+.bt1 {
+    border-top: 1px solid #ebebeb !important
+}
+.sendButton {
+    color: #fff !important;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #2979FF;
+    padding: 20px;
+    display: inline-block;
+    border: none;
+    width: 20%;
+}

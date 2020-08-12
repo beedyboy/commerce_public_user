@@ -1,0 +1,28 @@
+.rating {
+    margin-left: 37%;
+    padding: 0;
+}
+
+.ul {
+    list-style-type: none;
+    margin-left: 37%;
+}
+
+ 
+.price {
+    color: #ff4517;
+    margin-left: 37%;
+    font-weight: 600;
+}
+.outOfStock {
+    color: #e84118;
+  }
+
+  .cardTitle {
+    margin-bottom: 0.2rem;
+}
+.cardBody {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0.5rem;
+}

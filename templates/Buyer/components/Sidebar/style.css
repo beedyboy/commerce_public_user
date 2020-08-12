@@ -1,0 +1,103 @@
+/* .sidebar {
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid;
+  border-radius: 0;
+  border-color: rgba(64, 194, 133, 0.693);
+  background-color: rgb(255, 255, 255);
+  transition: 0.8s ease;
+  
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 100vh !important;
+  z-index: 100;
+  padding: 48px 0 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); 
+}
+#sidebar-wrapper{
+  min-height: 100vh !important;
+  width: 100vw;
+  margin-left: -1rem;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+#page-content-wrapper {
+  min-width: 0;
+  width: 100%;
+}
+    .root {
+      position: "absolute";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: "hidden"
+    }
+    .sidebars {
+      z-index: 2;
+      position: "absolute";
+      background: white;
+      box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+      top: 0;
+      bottom: 0;
+      transition: "transform .3s ease-out";
+      -webkit-transform: "-webkit-transform .3s ease-out"; 
+      overflow-y: "auto"
+    }
+    .content {
+      position: "absolute";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: "auto";
+      -webkit-overflow-scrolling: touch; 
+      transition: "left .3s ease-out; right .3s ease-out"
+    }
+    .overlay {
+      z-index: 1;
+      position: "fixed";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      visibility: "hidden";
+      transition: "opacity .3s ease-out; visibility .3s ease-out";
+      background-color: "rgba(0;0;0;.3)"
+    }
+    .dragHandle {
+      z-index: 1;
+      position: "fixed";
+      top: 0;
+      bottom: 0
+    }
+ 
+
+  /* .side-drawer {
+    height: 100%;
+    background: white;
+    box-shadow: 1px 0px 7px rgba(0; 0; 0; 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
+    max-width: 400px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+  }
+  
+  .side-drawer.open {
+    transform: translateX(0);
+  } */ 
