@@ -4,7 +4,7 @@ import Storage from "./Storage";
 Axios.defaults.withCredentials = true; 
 let urls = {
     development: 'http://localhost:8000/',
-    production: 'http://cloud.devprima.com/'
+    production: 'https://bclient-server.herokuapp.com/'
 }
  
 const  api = Axios.create({
