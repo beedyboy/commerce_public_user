@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import dataHero from 'data-hero';  
 import Router  from "next/router";
 import Storage from "../../services/Storage"; 
+import CookieService from "../../services/CookieService"; 
 import { useMobxStores } from "../../stores/stores";
 // import useEffect from "../../services/LayoutEffect";
 
@@ -49,6 +50,7 @@ const Login = props => {
               Router.push('/buyer/dashboard'); 
             } else {
               Storage.save('id', id);
+              CookieService.save('access_token', buyer_token)
               Router.push('/seller/dashboard');
             }
           } else {
@@ -60,6 +62,7 @@ const Login = props => {
               Router.push('/buyer/dashboard'); 
             } else {
               Storage.save('id', id);
+              CookieService.save('access_token', buyer_token)
               Router.push('/seller/dashboard');
             }
           
