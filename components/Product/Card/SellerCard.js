@@ -9,12 +9,17 @@ import styles from './Card.module.css';
 import { serverUrl } from '../../../services/APIService';
  import Link  from 'next/link'
 import AddStock from '../../stock/add-stock';
+import StockTable from '../../stock/StockTable';
 
 const SellerCard = props => {
     const { product }  = props;
     const [modal, setModal] = useState(false);
+    const [stockView, setStockView] = useState(false);
     const toggle = () => setModal(!modal);
     const closeBtn = <Button className="close" onClick={toggle}>&times;</Button>;
+
+    const showStockView = () => setStockView(!stockView);
+    const stockCloseBtn = <Button className="close" onClick={showStockView}>&times;</Button>;
     const linker = (data) => {
       return  data.toLowerCase()
                 .replace(/[^\w ]+/g, '')
@@ -68,6 +73,15 @@ const SellerCard = props => {
                     <AddStock />
                 </ModalBody>
             </Modal>
+
+            <Modal isOpen={stockView} toggle={showStockView}>
+                <ModalHeader toggle={showStockView} close={stockCloseBtn}>Stock</ModalHeader>
+                <ModalBody>
+                    <StockTable />
+                </ModalBody>
+            </Modal>
+
+            
         </Fragment>
     )
 }
