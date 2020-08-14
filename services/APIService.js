@@ -8,9 +8,9 @@ let urls = {
 }
  
 const  api = Axios.create({
-    baseURL: urls[process.env.NODE_ENV] +'api/',
+    baseURL: urls.production +'api/',
     responseType: 'json',
-    timeout: 10000,
+    // timeout: 10000,
     withCredentials: true,
     headers: {
        common: {
@@ -21,7 +21,7 @@ const  api = Axios.create({
     }
   });
 
-  export const serverUrl = urls[process.env.NODE_ENV];
-  export const ENDPOINT = urls[process.env.NODE_ENV];
+  export const serverUrl = urls.production;
+  export const ENDPOINT = urls.production;
 
   export default  api;

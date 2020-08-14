@@ -6,6 +6,7 @@ import ChatStore from './ChatStore';
 import LocationStore from './LocationStore';
 import OrderStore from './OrderStore';
 import ProductStore from './ProductStore';
+import StockStore from './StockStore';
 import UserStore from './UserStore';
 
 const isServer = typeof window === 'undefined';
@@ -19,6 +20,7 @@ export  function getStores(initialData = { productStore: {}, categoryStore: {}, 
         return {
             authStore: new Auth(),
             productStore: new ProductStore(initialData.ProductStore),
+            stockStore: new StockStore(initialData.StockStore),
             categoryStore: new CategoryStore(initialData.categoryStore),
             chatStore: new ChatStore(initialData.chatStore),
             locationStore: new LocationStore(initialData.locationStore),
@@ -30,6 +32,7 @@ export  function getStores(initialData = { productStore: {}, categoryStore: {}, 
         store = {
             authStore: new Auth(),
             productStore: new ProductStore(initialData.ProductStore),
+            stockStore: new StockStore(initialData.StockStore),
             categoryStore: new CategoryStore(initialData.categoryStore),
             chatStore: new ChatStore(initialData.chatStore),
             locationStore: new LocationStore(initialData.locationStore),

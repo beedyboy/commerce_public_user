@@ -21,7 +21,7 @@ const ChatWindow = props => {
      //const [chatBoxes, setChatBoxes] = useState([]);
  //console.log(chatStore); 
   useEffect(() => {
-   socket = io(ENDPOINT);
+  //  socket = io(ENDPOINT);
          
        emitter.on('chatNow', ( user) => {
             console.log('user now', user);
@@ -32,7 +32,7 @@ const ChatWindow = props => {
         return () => {
             //socket.emit('disconnect');
 
-            socket.off();
+            // socket.off();
         }
     }, []);
      //console.log('chats',chats);

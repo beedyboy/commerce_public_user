@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from 'react'
 import { observer } from 'mobx-react'   
 import Head from 'next/head';  
 import { useMobxStores } from "../../stores/stores";
-import ListCard from '../../components/Product/Card/ListCard';
+import SellerCard from '../../components/Product/Card/SellerCard';
 import { Row, Card, CardHeader, CardBody, NavLink } from 'reactstrap';
 import { SellerLayout } from '../../templates';
 
@@ -38,7 +38,7 @@ import { SellerLayout } from '../../templates';
             (
               <Row>
               {filteredProduct && filteredProduct.map((product) =>
-                <ListCard key={product.id} product={product} /> 
+                <SellerCard key={product.id} product={product} /> 
               )}
           </Row>
             )

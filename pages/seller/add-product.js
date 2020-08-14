@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect, useRef } from "react";  
 import Head from 'next/head';  
 import shortId from 'short-id';
-import { Row, Container, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, CardFooter, FormText, CustomInput, Button } from "reactstrap";
+import { Row, Container, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, CardFooter, FormText, Button } from "reactstrap";
 import Select from 'react-select';
 import usePlacesAutocomplete, {
   getGeocode,
@@ -28,24 +28,22 @@ const AddProduct = () => {
   const { saveProduct, sending, saved, refreshForm } = productStore; 
   const { categories, tagCategories } = categoryStore;  
   const editorRef= useRef();
-  const mainInput = useRef('');
-  const firstInput = useRef('');
+  const mainInput = useRef(''); 
   
-  const {  CKEditor, ClassicEditor } = editorRef.current || {};
-
+  const { ready, value, suggestions: { status, data},
+  setValue, clearSuggestions
+ } = usePlacesAutocomplete({requestOptions: {
+    // define search engnie scope
+  },
+  debounce: 300
+});
+  const {  CKEditor, ClassicEditor } = editorRef.current || {}; 
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [description, setDescription] = useState('');
   const [mainCat, setMainCat] = useState(null);
   const [tags, setTags] = useState('');
   const [imageArray, setImageArray] = useState([]);
-  const [uploadImage, setUploadImage] = useState({
-    images: {
-      'main': {preview: '', file: 'choose file'},
-      'first': {preview: '', file: ''},
-      'middle': {preview: '', file: ''},
-      'last': {preview: '', file: ''}
-    }
-  });
+  const [uploadImage, setUploadImage] = useState('');
 
     const [formState, setFormState] = useState({
         isValid: false, 
@@ -65,7 +63,7 @@ const AddProduct = () => {
         const errors = dataHero.validate(schema, formState.values);  
         setFormState(formState => ({
           ...formState,
-          isValid: errors.name.error || errors.available.error ?  false: true,
+          isValid: errors.name.error ?  false: true,
           errors: errors || {}
         }));
       }, [formState.values]);
@@ -80,11 +78,7 @@ const AddProduct = () => {
        }, [saved])
       const handlePreUpload = (e, name) => {
         e.preventDefault();  
-        if(name === 'main') {
-          mainInput.current.click();
-         } else if(name === 'first') {
-         firstInput.current.click();
-         }
+        mainInput.current.click();
       }
     const handleTag = e => { 
         setTags(Array.isArray(e) ? e.map(x => x.value) : []); 
@@ -108,9 +102,7 @@ const handleChange = event => {
         [event.target.name]: true
       }
     }));
-    // console.log(field,  ': ',  event.target.type === 'checkbox'
-    ? event.target.checked
-    : event.target.value)
+     
     switch (field) {
         case 'cat_id':
             getCatName(event.target.value);
@@ -133,6 +125,7 @@ const readURI = (e) => {
     if (e.target.files) { 
         /* Get files in array form */
         const files = Array.from(e.target.files); 
+        console.log(files)
         /* Map each file to a promise that resolves to an array of image URI's */ 
         Promise.all(files.map(file => {
             return (new Promise((resolve,reject) => {
@@ -147,6 +140,7 @@ const readURI = (e) => {
         .then(images => { 
             /* Once all promises are resolved, update state with image URI array */
             setImageArray( images )
+            setUploadImage(files)
 
         }, error => {        
             console.error(error);
@@ -155,10 +149,16 @@ const readURI = (e) => {
 }
   const buildImgTag = () => {
 
-    return <div className="photo-container">
+    return <div className="photo-container" style={{overflowX: 'auto'}}>
     { 
      imageArray.map(imageURI => 
-      (<img className="photo-uploaded" src={imageURI} alt="Photo uploaded"/>)) 
+      (
+        <div className={styles.beedy}>
+        <div className={styles.imagePreview}>
+        <img className="photo-uploaded" key={shortId.generate()} src={imageURI} alt="Photo uploaded"/>
+        </div>
+        </div> 
+       )) 
     }
     </div>
 }
@@ -182,25 +182,15 @@ const readURI = (e) => {
   }
   
  
-  const createProduct = e => {
-    e.preventDefault();
-    const fd = new FormData();  
-    fd.append('main_image', uploadImage.images.main.file);
-    fd.append('first_image', uploadImage.images.first.file);
-    fd.append('description', description);
-    fd.append('tags', JSON.stringify(tags));
-    fd.append('mainCat', mainCat); 
-    fd.append('name', formState.values.name);
-    fd.append('cat_id', formState.values.cat_id); 
-    fd.append('location', formState.values.location); 
-    saveProduct(fd); 
-  }
 const hasError = field =>
       formState.touched[field] && formState.errors[field].error;  
 
 const changeLocation = (e) => {
 setValue(e.target.value);
 }
+ const ref = useOnclickOutside(() => { 
+    clearSuggestions();
+  });
 const handleSelect = ({ description }) => () => {
   setValue(description, false);
   clearSuggestions();
@@ -223,12 +213,12 @@ const renderSuggestions = () =>
  data.map((suggestion) => {
    const { id,structured_formatting: { main_text, secondary_text} } = suggestion; 
    return (
-     <li key={shortId.generate()} onClick={handleSelect(suggestion)}>
+     <li key={shortId.generate()} onClick={selectLocation(suggestion)}>
        <strong>{main_text}</strong> <small>{secondary_text}</small>
      </li>
    );
  });
-const handleSelect = ({ description }) => () => {
+const selectLocation = ({ description }) => () => {
   setValue(description, false);
   clearSuggestions();
   // get latitude and longitude
@@ -238,18 +228,23 @@ const handleSelect = ({ description }) => () => {
     console.log("Coordinates: ", {lat, lng });
   });
   // AIzaSyA3rf9nGVSK2Zz8lQndk-rGrHhDpE-kp14
-}
-const renderSuggestions = () => 
- data.map((suggestion) => {
-   const { id,structured_formatting: { main_text, secondary_text} } = suggestion;
-
-   return (
-     <li key={id} onClick={handleSelect(suggestion)}>
-       <strong>{main_text}</strong> <small>{secondary_text}</small>
-     </li>
-   );
- });
-    
+} 
+   
+  const createProduct = e => {
+    e.preventDefault();
+    const fd = new FormData();   
+    for(var x = 0; x < uploadImage.length; x++) { 
+    fd.append('image', uploadImage[x]);
+    }
+    fd.append('description', description);
+    fd.append('tags', JSON.stringify(tags));
+    fd.append('mainCat', mainCat); 
+    fd.append('name', formState.values.name);
+    fd.append('cat_id', formState.values.cat_id); 
+    fd.append('latitude', formState.values.latitude);
+    fd.append('longitude', formState.values.longitude); 
+    saveProduct(fd); 
+  } 
 const handleReset = () => {
          setFormState(formState => ({
       ...formState,
@@ -394,12 +389,19 @@ const handleReset = () => {
           <CardBody>
           <Row>      
             <Col md="12" sm="12">
-            <div className={styles.beedy}>
-                <div className={styles.imagePreview}>
-                   {buildImgTag()}
-                </div>
-                </div> 
-            <input
+             
+                   {buildImgTag()} 
+                <input
+            type="file"
+              accept="image/*"
+              multiple
+              name="main"
+              id="main"
+              onChange={(e)=> readURI(e)}
+              className={styles.beedyInput} 
+               ref={mainInput}
+            />
+            {/* <input
             type="file"
               accept="image/*"
               name="main"
@@ -407,7 +409,7 @@ const handleReset = () => {
               onChange={(e)=> handleUpload(e)}
               className={styles.beedyInput}
               ref={mainInput}
-            />
+            /> */}
             <Label for="main"> 
               <Button type="button" color="secondary"
                     size="small" 
@@ -421,7 +423,7 @@ const handleReset = () => {
             </Col>              
          </Row>
           {editorLoaded ? (
-                                <Row>
+          <Row>
            <Col md="12">
              <FormGroup>
                <Label>Description</Label>
@@ -435,40 +437,20 @@ const handleReset = () => {
          ) : (
           <div>Editor loading </div>
          )
-      } 
-         <Row>
-           <Col md="12">
-           <FormGroup check>
-                    <Label check> 
-                    <Input value={formState.values.packed} type="radio" id="packed" onChange={handlePackedChange} name="packed" />{' '}
-                    PACKED
-                     </Label> 
-                </FormGroup>
-
-                <FormGroup check>
-                    <Label check> 
-                    <Input value={formState.values.packed} type="radio" id="unpacked" onChange={handlePackedChange} name="packed" />{' '}
-                    UNPACKED
-                     </Label> 
-                </FormGroup> 
-                 
-           </Col>
-         </Row>
+      }    
           </CardBody>
         </Card>
       </Col>
       </Row>
  
-    <CardFooter>
-    <Button color="primary" disabled={!formState.isValid || sending } 
-        type="submit">
+    <CardFooter className="my-3">
+    <Button type="submit" color="primary" className="py-2"
+      disabled={!formState.isValid || sending }>
             Save changes
     </Button>
-    {/* <Button color="primary" disabled={!formState.isValid || sending} 
-        type="submit" 
-        onClick={mode === 'Add'? addCategory : updateCategory}>
-            Save changes
-    </Button> */}
+    <Button color="primary" type="submit">
+            Save 
+    </Button> 
     </CardFooter>
           
         </Form>
@@ -481,7 +463,13 @@ const handleReset = () => {
                        variant="extended">
                   {filename} <AddPhotoAlternateIcon />
                  </Fab>
-               </label> */}
+               </label>
+               Features.
+
+Excellent quality: PA environmental friendly plastic heat and cold resistant high temperature.
+Segmented telescopic design
+Scientific board design
+ */}
         </Container>
       </SellerLayout>
       
