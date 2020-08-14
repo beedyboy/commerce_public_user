@@ -128,6 +128,7 @@ const ProductDetails = ({details}) => {
 
   const placeBid = e => { 
     //console.log('items', d.split("-"));
+  }
   const startChat = (seller) => { 
     Chatter(seller)
   }
@@ -320,4 +321,4 @@ const ProductDetails = ({details}) => {
 ProductDetails.getInitialProps = async ({ query }) => {
   return {details: query.details}
 }
-export default observer(ProductDetails);
+export default observer(ProductDetails)
