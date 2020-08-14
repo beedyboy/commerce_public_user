@@ -58,7 +58,7 @@ const SellerCard = props => {
                </CardBody>
                <CardFooter>
                <Button color="warning" onClick={toggle}>Add Stock</Button> {" "}
-               <Button color="info">View Stocks</Button>
+               <Button color="info" onClick={viewStock}>View Stocks</Button>
                </CardFooter>
                 </Card>
             </Col>
