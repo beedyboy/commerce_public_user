@@ -77,7 +77,7 @@ const SellerCard = props => {
             <Modal isOpen={stockView} toggle={showStockView}>
                 <ModalHeader toggle={showStockView} close={stockCloseBtn}>Stock</ModalHeader>
                 <ModalBody>
-                    <StockTable />
+                    <StockTable details={product.id} />
                 </ModalBody>
             </Modal>
 

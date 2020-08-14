@@ -10,11 +10,11 @@ const StockTable = ({details}) => {
     const { stockStore } = useMobxStores();
     const { stocks: data, productStock } = stockStore; 
     useEffect(() => {
-        var details = router.query.details; 
-        console.log({details})
-        const second = details[1];
-        const id = second.split("-");
-        productStock(id);
+        // var details = router.query.details; 
+        // console.log({details})
+        // const second = details[1];
+        // const id = second.split("-");
+        productStock(details);
     }, [])
  
 const activeFormatter = (cell, row) => {
@@ -81,8 +81,8 @@ const columns = [
     )
 }
  
-StockTable.getInitialProps = async ({ query }) => {
-    return {details: query.details}
-  }
+// StockTable.getInitialProps = async ({ query }) => {
+//     return {details: query.details}
+//   }
 
 export default StockTable
