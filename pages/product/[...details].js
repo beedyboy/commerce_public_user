@@ -41,8 +41,7 @@ const ProductDetails = ({details}) => {
     
   useEffect(() => {
     const rp = product && product.product_name;  
-    if(rp) {
-
+    if(rp) { 
       setData(state => ({
         ...state, 
           id: product.id, 

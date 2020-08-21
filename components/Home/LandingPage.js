@@ -18,14 +18,19 @@ import usePlacesAutocomplete, {
 } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
 import ListCard  from '../Product/Card/ListCard';
- const LandingPage = () => { 
-    const {  productStore } = useMobxStores(); 
+ const LandingPage = () => {  
+    const { categoryStore, productStore } = useMobxStores();  
+    const { categories } = categoryStore;  
     const homeProducts = productStore.homeProducts;  
     const [search, setSearch] = useState('');
     const [formState, setFormState] = useState({
         latitude: '',
         longitude: '',
-        product: ''
+        price: '',
+        quantity: '',
+        delivery: '',
+        packed: '',
+        cat_id:''
     });
   const { ready, value, suggestions: { status, data},
   setValue, clearSuggestions
@@ -127,7 +132,7 @@ const renderSuggestions = () =>
             <Form>
                 <Row>
                     
-                    <Col md="6" lg="4" className="mb-lg-0">
+                    <Col md="3" lg="3" className="mb-lg-0">
                         <Label for="location" className="font-weight-bold text-black">Location</Label>
                         <div  className="field-icon-wrap">
                             <div className="icon"><span className="icon-calendar"></span></div>
@@ -136,24 +141,48 @@ const renderSuggestions = () =>
                                value={value}
                                onChange={changeLocation}
                                disabled={!ready}
-                               placeholder="which area are you looking at"
+                               placeholder="Location"
                                />
                                {status === 'OK' && <ul>{renderSuggestions()}</ul>}
                              </div> 
                             </div> 
                     </Col> 
-                    <Col md="6" lg="4" className="mb-lg-0">
-                        <Label for="checkout_date" className="font-weight-bold text-black">Product</Label>
+                    <Col md="3" lg="3" className="mb-lg-0">
+                        <Label for="checkout_date" className="font-weight-bold text-black">Category</Label>
                         <div className="field-icon-wrap">
                             <div className="icon"><span className="icon-calendar"></span></div>
-                            <Input type="text" onChange={handleChange} id="checkout_date" className="form-control" />
+                            <Input
+                                type="select" 
+                                value={formState.cat_id || ''}
+                                name="cat_id"
+                                id="cat_id" 
+                                onChange={handleChange}>
+                                 <option value="" key="ct">select</option>
+                                {categories && categories.map(cat => (
+                                <option value={cat.id} key={cat.id}>{cat.name}</option>
+                                ))}
+                     </Input>
                             </div>
                     </Col>
-                    <Col md="6" lg="4" className=" align-self-end"> 
+                    <Col md="2" lg="2" className="mb-lg-0">
+                        <Label for="checkout_date" className="font-weight-bold text-black">Qty</Label>
+                        <div className="field-icon-wrap">
+                            <div className="icon"><span className="icon-calendar"></span></div>
+                            <Input type="text"  value={formState.quantity || ''} onChange={handleChange} name="quantity" className="form-control" />
+                            </div>
+                    </Col>
+                    <Col md="2" lg="2" className="mb-lg-0">
+                        <Label for="checkout_date" className="font-weight-bold text-black">Price</Label>
+                        <div className="field-icon-wrap">
+                            <div className="icon"><span className="icon-calendar"></span></div>
+                            <Input type="text"  value={formState.price || ''} onChange={handleChange} name="price" className="form-control" />
+                            </div>
+                    </Col>
+                    <Col md="3" lg="2" className=" align-self-end"> 
                         <Button color="primary"
                         onClick={handleSearch}
                          className="text-white">
-                        Check Availabilty
+                        Search
                         </Button> 
                     </Col>
                 </Row>

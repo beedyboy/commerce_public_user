@@ -45,10 +45,14 @@ const ListCard = props => {
                 </div>
                </div>
                    </div>
-                   <Link href={`/product/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/product/${product.product_name}/${product.id}-${product.catName}`}>
+                   <Link href={`/home/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/home/${product.product_name}/${product.id}-${product.catName}`}>
+                  
+                  <a>{product.product_name}</a>
+               </Link>
+                   {/* <Link href={`/product/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/product/${product.product_name}/${product.id}-${product.catName}`}>
                   
                      <a>{product.product_name}</a>
-                  </Link>
+                  </Link> */}
                </CardBody>
                 </Card>
             </Col>
