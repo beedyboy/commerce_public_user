@@ -7,16 +7,21 @@ import { Beedy } from "../services/Beedy";
 class UserStore { 
  
     @observable error = null;
+    @observable close = false;
+    @observable sending = false;
     @observable invited = false;
     @observable loading = false;
     @observable emailExist = false; 
     @observable buyer = [];
+    @observable staffs = [];
     @observable profiles = [];
     @observable seller =  [
       {'name': 'Dynamic Programming', 'description': "dynamic", 'duration': '10'} 
     ];
 
-  
+  @action toggleClose = () => {
+    this.close = false
+  }
    
     
  @action getBuyerProfile = () => {
@@ -127,7 +132,43 @@ class UserStore {
 	console.error(e);
   }
 }
-
+     
+@action getStaff = () => {
+  try {
+     api.get('user/staff/list/').then( res => { 
+     if(res.data.status === 200) { 
+       this.staffs = res.data.data; 
+     }
+   })
+   .catch(err => {
+    console.log('getSellerProfile', err.code);
+    console.log('getSellerProfile', err.message);
+    console.log('getSellerProfile', err.stack);
+   });
+  } catch(e) {
+ console.error(e);
+  }
+ }
+ @action saveStaff = (data) => { 
+  try {
+     this.sending = true;
+   api.post('user/create/staff',data).then( res => {  
+     if(res.data.status === 200) { 
+       this.sending = false;
+       this.close = true;
+       this.getStaff();
+       Beedy('success', res.data.message); 
+     }
+   })
+   .catch(err => {
+    console.log('inviteAFriend', err.code);
+    console.log('inviteAFriend', err.message);
+    console.log('inviteAFriend', err.stack);
+   });
+  } catch(e) {
+ console.error(e);
+  }
+ }
  @action inviteAFriend = (data) => { 
    try {
 	    this.loading = true;

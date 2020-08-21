@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head'; 
+import './../public/assets/css/sellers.css';
 import './../public/assets/css/style.css';
 import './../public/assets/css/profile.css';
 import './../public/assets/css/chat.css';

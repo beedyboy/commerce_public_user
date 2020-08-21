@@ -24,6 +24,7 @@ class ProductStore {
      }
     
      @action refreshForm = () => {
+       console.log('called')
       this.saved = false; 
      }
     @action fetchProduct = () => { 

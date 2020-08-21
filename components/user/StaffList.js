@@ -5,7 +5,7 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginatorFactory from 'react-bootstrap-table2-paginator';
 import Switch  from 'react-bootstrap-switch'; 
 
-const StockTable = ({data, toggle}) => { 
+const StaffList = ({data, toggle}) => { 
 
  
 const activeFormatter = (cell, row) => {
@@ -30,13 +30,9 @@ const activeFormatter = (cell, row) => {
 	)
   }
 const columns = [
-	{dataField: "stock_name", text: "Stock Name"},
-	{dataField: "quantity", text: "Quantity"},
-	{dataField: "price", text: "Price",
-	//filter: textFilter()
-	}, 
-	// {dataField: "available", text: "Qty"},
-	// {dataField: "price", text: "Price"},
+	{dataField: "firstname", text: "First Name"},
+	{dataField: "lastname", text: "Last Name"},
+	{dataField: "email", text: "Email"}, 
 	{dataField: "created_at", text: "Date Created"},
 	{
 		dataField: "featured",
@@ -73,4 +69,4 @@ const columns = [
 }
  
 
-export default StockTable;
+export default StaffList;

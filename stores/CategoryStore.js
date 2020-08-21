@@ -17,7 +17,7 @@ class CategoryStore {
   @action  fetchCategory = () => {
     try {
 		this.loading = true;
-    api.get('category').then( res => {  
+    api.get('category').then( res => {  console.log('data', res.data)
           this.categoryList = res.data;
       this.loading = false; 
     })

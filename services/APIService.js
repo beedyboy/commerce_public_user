@@ -14,7 +14,7 @@ const  api = Axios.create({
     withCredentials: true,
     headers: {
        common: {
-        Authorization: `bearer ${Storage.get('token')}`
+        Authorization: `Bearer ${Storage.get('token')}`
       },
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json'

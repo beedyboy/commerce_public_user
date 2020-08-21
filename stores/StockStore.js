@@ -7,6 +7,7 @@ import { Beedy } from "../services/Beedy";
 class StockStore { 
   
     @observable error = false;
+    @observable close = false;
     @observable filter = 'ALL';
     @observable message = '';
     @observable loading = false;
@@ -18,22 +19,25 @@ class StockStore {
     @action  setFilter = (data) => {
      	this.filter = data;
      }
+     @action  toggleClose = () => {
+      this.close = false;
+    }
     
      @action refreshForm = () => {
       this.saved = false; 
      } 
    
- @action saveStock = (formData) => { 
+ @action saveStock = (data) => {  
     try {
       this.sending = true;
-      api.post('stock', formData).then(res => {
+      api.post('stock', data).then(res => {
         this.sending = false;
         if(res.data.status === 500) {
           CookieService.logout();
         }
        else  if(res.data.status === 200) {
-        this.saved = true;
-        this.fetchStock();
+        this.close = true;
+        // this.fetchStock();
         Beedy('success', res.data.message);
        }
        
@@ -55,13 +59,13 @@ class StockStore {
  @action productStock = (id) => {  
     try {
    this.loading = true;
-   api.get('product/' + id).then( res => {   
+   api.get('stock/product/' + id).then( res => {   
       this.loading = false;
       if(res.data.status === 500) {
         CookieService.logout();
       }
      else if(res.data.status === 200) {
-       this.stocks = res.data.data; 
+         this.stocks = res.data.data; 
       }
         
     })
@@ -122,7 +126,9 @@ class StockStore {
         return this.stocks;
     }
   }
-
+  @computed get allProductStocks() {
+    return   Object.keys(this.stocks || {}).map(key => ({...this.stocks[key], uid: key}));
+  }
   @computed get info() {
   	return {
       total: this.stocks.length,

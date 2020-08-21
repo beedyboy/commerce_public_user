@@ -5,15 +5,20 @@ import Footer from '../Footer';
 import Router from 'next/router';
 import { Container, Row, Col } from 'reactstrap';
 import CookieService from '../../../../services/CookieService'; 
+import SellerSidebar from '../Sidebar/Sidebar';
+import Link from 'next/link';
   
 const SellerLayout = props => { 
-    const [isOpen, setIsOpen] = useState(true); 
+  const [sidebar, setSidebar] = useState(false); 
+  const [isOpen, setIsOpen] = useState(true); 
     const [scroll, setScroll] = useState('');  
     const [doForm, setDoForm] = useState({
         login: 'none',
         register: 'none'
     });   
 
+    const openSideBar = () => setSidebar(true);
+    const closeSideBar = () => setSidebar(false);
   const toggle = () => setIsOpen(!isOpen);
   useEffect(() => {
       const token = CookieService.get('access_token');
@@ -56,24 +61,38 @@ const SellerLayout = props => {
   
     return (
          <Fragment>
-            <TopBar scroll={scroll} handleForm={handleForm} doForm={doForm} isOpen={isOpen} toggle={toggle} />
-            <Container fluid>
-              <Row>
-              <Col xs={2}>    
-              
-            </Col>
-              </Row>
-
-                <Row> 
-                    <Col  xs={12}>
-                    {props.children}
-
-                    </Col> 
-                </Row>
-
-            </Container> 
-            
-             <Footer />
+             <div className={`wrapper ${sidebar? 'active' : ''}`}>
+          <div className="rsidebar">
+            <div className="bg_shadow"></div>
+            <div className="sidebar__inner">
+          <div className="close">
+            <i className="fa fa-times" aria-hidden="true" onClick={closeSideBar}></i>
+          </div>
+              <SellerSidebar />
+          </div>
+          </div>
+          <div className="seller_main_container">
+            <div className="top_navbar">
+              <div className="hamburger">
+                <div className="hamburger__inner">
+                  <i className="fa fa-bars" aria-hidden="true" onClick={openSideBar}></i>
+                </div>
+              </div>
+              <ul className="menu">
+              <li><Link href="/"><a>Blogs</a></Link></li>
+              <li><Link href="/"><a>Contact</a></Link></li>
+              <li><Link href="/"><a>Product</a></Link></li>
+              </ul>
+              <ul className="right_bar">
+              <li><Link href="/"><a><i className="fa fa-bell"></i></a></Link></li>
+              <li><Link href="/"><a><i className="fa fa-sign-out"></i></a></Link></li>
+              </ul>
+            </div>
+               <Container>
+               {props.children}
+               </Container>
+          </div>
+        </div>
          </Fragment>
     )
 }

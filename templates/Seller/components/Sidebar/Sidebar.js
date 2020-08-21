@@ -1,51 +1,68 @@
-import React from "react";
-import  './style.css';
- 
-const mql = window.matchMedia(`(min-width: 800px)`);
+import React, { Fragment } from "react"; 
+import Link from "next/link"; 
  
 const SellerSidebar = props => {
-  console.log(props)  
-  //   super(props);
-  //   this.state = {
-  //     sidebarDocked: mql.matches,
-  //     sidebarOpen: false
-  //   };
- 
-  //   this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-  //   this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-  // }
- 
-  // componentWillMount() {
-  //   mql.addListener(this.mediaQueryChanged);
-  // }
- 
-  // componentWillUnmount() {
-  //   this.state.mql.removeListener(this.mediaQueryChanged);
-  // }
- 
-  // onSetSidebarOpen(open) {
-  //   this.setState({ sidebarOpen: open });
-  // }
- 
-  // mediaQueryChanged() {
-  //   this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
-  // }
-  let drawerClasses = 'side-drawer'
-  if (props.show) {
-    drawerClasses = 'sidebar open'
-  }
+   
     return (
+      <Fragment>
+        
+              <div className="profile_info">
+                <div className="profile_img">
+                  <img src="/assets/images/person_2.jpg" alt="profile_pic" />
+                </div>
+                <div className="profile_data">
+                  <div className="name">Akinniyi Bolade</div>
+                  <div className="role">Seller</div>
+                  <div className="btn">Update Profile</div>
+                </div>
+              </div>
+            <ul className="sidebar_menu">
+             
+              <li>
+              <Link href="/seller/dashboard"> 
+              <a> <div className="icon"><i className="fa fa-dashboard"></i></div>
+                  <div className="title">Dashboard</div> 
+                </a> 
+                </Link>
+              </li>
+
+              <li>
+              <Link href="/seller/my-products"> 
+              <a> <div className="icon"><i className="fa fa-product-hunt"></i></div>
+                  <div className="title">Products</div> 
+                </a> 
+                </Link>
+              </li>
+
+
+              <li>
+              <Link href="/seller/profile"> 
+              <a> <div className="icon"><i className="fa fa-gavel"></i></div>
+                  <div className="title">Bids</div> 
+                </a> 
+                </Link>
+              </li>
+              <li>
+              <Link href="/seller/profile"> 
+              <a> <div className="icon"><i className="fa fa-first-order"></i></div>
+                  <div className="title">Order</div> 
+                </a> 
+                </Link>
+              </li>
+
+              <li>
+              <Link href="/shop/staff"> 
+              <a> <div className="icon"><i className="fa fa-users"></i></div>
+                  <div className="title">Staff</div> 
+                </a> 
+                </Link>
+              </li>
+
+
+            </ul>
+           
+      </Fragment>
       
-      <nav className={drawerClasses}>
-        <ul>
-          <li>
-            <a href="/">Products</a>
-          </li>
-          <li>
-            <a href="/">Users</a>
-          </li>
-        </ul>
-      </nav>
     )
   }
  

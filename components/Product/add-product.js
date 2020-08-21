@@ -1,17 +1,16 @@
-import React, { useState, Fragment, useEffect, useRef } from "react";  
-import Head from 'next/head';  
+import React, { useState, Fragment, useEffect, useRef } from "react";   
 import shortId from 'short-id';
-import { Row, Container, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, CardFooter, FormText, Button } from "reactstrap";
+import { Row, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, FormText, Button } from "reactstrap";
 import Select from 'react-select';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng
 } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
-import dataHero from "data-hero";   
+import dataHero from "data-hero";    
+import styles from './add-product.module.css';    
 import { useMobxStores } from "../../stores/stores";
-import styles from './add-product.module.css';   
-import { SellerLayout } from "../../templates";
+import { observer } from "mobx-react";
 const schema = {
     name:  {
         isEmpty: false,
@@ -161,26 +160,7 @@ const readURI = (e) => {
        )) 
     }
     </div>
-}
-  const handleUpload = e => {
-    e.persist(); 
-    let reader = new FileReader();
-    let image = e.target.files[0];
-    reader.onloadend = () => { 
-      setUploadImage( state =>  ({
-        ...state,
-        images: {
-          ...state.images,
-          [e.target.name]: {
-            preview: reader.result,
-            file: image
-          }
-        }
-      }) );
-    }
-   reader.readAsDataURL(image);
-  }
-  
+} 
  
 const hasError = field =>
       formState.touched[field] && formState.errors[field].error;  
@@ -191,24 +171,7 @@ setValue(e.target.value);
  const ref = useOnclickOutside(() => { 
     clearSuggestions();
   });
-const handleSelect = ({ description }) => () => {
-  setValue(description, false);
-  clearSuggestions();
-  // get latitude and longitude
-  getGeocode({ address: description})
-  .then((results) => getLatLng(results[0]))
-  .then(({ lat, lng} ) => {
-    console.log("Coordinates: ", {lat, lng });
-    setFormState(formState => ({
-          ...formState, 
-      values: {
-        ...formState.values,
-            latitude: lat,
-          longitude: lng
-        }
-        }));
-  }); 
-}
+ 
 const renderSuggestions = () => 
  data.map((suggestion) => {
    const { id,structured_formatting: { main_text, secondary_text} } = suggestion; 
@@ -271,15 +234,8 @@ const handleReset = () => {
       setMainCat(null);
   }
     return (
-    <Fragment>
-      <Head>
-           <title>Add Product</title> 
-      </Head>
-      <SellerLayout>
-      <Container>
-           <CardHeader>
-                <h4>New Product</h4> 
-                </CardHeader>
+    <Fragment> 
+        <h4>New Product</h4> 
         <Form onSubmit={createProduct}>
       <Row>
       <Col md="6" lg="6" sm="12">
@@ -443,39 +399,23 @@ const handleReset = () => {
       </Col>
       </Row>
  
-    <CardFooter className="my-3">
-    <Button type="submit" color="primary" className="py-2"
+    <Row className="my-3">
+   <Col md="12">
+   <Button type="submit" color="primary" className="py-2"
       disabled={!formState.isValid || sending }>
-            Save changes
+           {sending ? (
+            <span> Saving data  <i className="fa fa-spinner"></i></span>
+            ): 'Save changes'}
     </Button>
-    <Button color="primary" type="submit">
-            Save 
-    </Button> 
-    </CardFooter>
+   </Col>
+    
+    </Row>
           
         </Form>
-        {/* <label htmlFor="contained-button-file">
-                 
-                 <Fab color="secondary"
-                       size="small"
-                       component="span"
-                       aria-label="add"
-                       variant="extended">
-                  {filename} <AddPhotoAlternateIcon />
-                 </Fab>
-               </label>
-               Features.
-
-Excellent quality: PA environmental friendly plastic heat and cold resistant high temperature.
-Segmented telescopic design
-Scientific board design
- */}
-        </Container>
-      </SellerLayout>
-      
+     
     </Fragment>
      
     )
 }
 
-export default AddProduct
+export default observer(AddProduct);

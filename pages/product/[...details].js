@@ -5,38 +5,28 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';  
 import { observer } from 'mobx-react'   
 import { useMobxStores } from '../../stores/stores';
-import { MainLayout } from '../../templates';
-import { serverUrl } from '../../services/APIService';
+import { MainLayout } from '../../templates'; 
 import { Chatter } from "../../services/Chatter";
+import shortId from 'short-id';
 import Link from 'next/link';
 
 const ProductDetails = ({details}) => {
   const router = useRouter();
-    const { productStore, orderStore } = useMobxStores();
+    const { productStore, stockStore, orderStore } = useMobxStores();
     const { product, getProductById } = productStore; 
+    const { allProductStocks:stocks, productStock } = stockStore; 
      const { bidNow } = orderStore;
      //console.log('msg',message);
     const [items, setItems] = useState([]); 
   const [data, setData] = useState({
-          id: '',
-          price: '',
-          packed: '',
+          id: '', 
           category: '',
-          location: '',
-          locationName: '',
-          available: '',
+          latitude: '',
+          longitude: '', 
           shopName: '',
           seller: '',
-          main_image: '',
-          first_image: '',
-          product_name: '',
-          first_delivery: '',
-          second_delivery: '',
-          third_delivery: '',
-          within_distance: '',
-          within_charge: '',
-          beyond_charge: '',
-          beyond_distance: '',
+          images: [], 
+          product_name: '', 
           description: ''
   }); 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,36 +36,26 @@ const ProductDetails = ({details}) => {
         const second = details[1];
         const id = second.split("-");
         getProductById(id);
+        productStock(id);
     }, [])
     
   useEffect(() => {
     const rp = product && product.product_name;  
     if(rp) {
-  //console.log('data', data, product);
+
       setData(state => ({
         ...state, 
-          id: product.id,
-          price: product.price,
-          packed: product.packed,
+          id: product.id, 
           category: product.catName, 
-          location: product.location,
-          locationName: product.locationName, 
+          latitude: product.latitude,
+          longitude: product.longitude, 
           available: product.available,
           shopName: product.shopName,
           seller: product.seller,
-          main_image: product.main_image,
-          first_image: product.first_image,
-          product_name: product.product_name,
-          first_delivery: product.first_delivery,
-          second_delivery: product.second_delivery,
-          third_delivery: product.third_delivery,
-          within_distance: product.within_distance,
-          within_charge: product.within_charge,
-          beyond_charge: product.beyond_charge,
-          beyond_distance: product.beyond_distance,
+          images: JSON.parse(product.images), 
+          product_name: product.product_name, 
           description: product.description
-      }));
-      productImages(); 
+      })); 
     }    
   }, [product]); 
   
@@ -93,35 +73,25 @@ const ProductDetails = ({details}) => {
      if (animating) return; 
     setActiveIndex(newIndex);
   }
-  const productImages = () => {
-    var d = [];
-      if (data.main_image) {
-      const m = {
-        src: data.main_image,
-        altText: 'Main Product Image'
-      }
-      d.push(m)
-    }
-          if (data.first_image) { 
-      const f = {
-        src: data.first_image,
-        altText: 'First Product Image'
-      }
-      d.push(f)
-    }
-    setItems(d); 
-    //setItems((state) => ({}))
-  }
   
-  const slides = items.map((item) => {
+  
+  const slides = data.images.map((item) => {
     return (
       <CarouselItem
        onExiting={() =>setAnimating(true)}
        onExited={() =>setAnimating(false)}
-       key={item.src}
+       key={shortId.generate()} 
        >
-       <img className="img-thumbnail w-100 d-block"  src={`${serverUrl}${item.src}`} alt={item.altText} />
+       <img className="img-thumbnail w-100 d-block"  src={`${item}`} alt={item} />
       </CarouselItem>
+    );
+  });
+   
+   const stockBtn = stocks && stocks.map((item, i) => {
+    return (
+     <span>
+        <Button color="primary" size="sm">Stock {i+ 1}</Button>{" "}
+     </span>
     );
   });
    
@@ -132,6 +102,7 @@ const ProductDetails = ({details}) => {
   const startChat = (seller) => { 
     Chatter(seller)
   }
+    console.log({stocks});
     return (
         <Fragment>
 
@@ -140,7 +111,7 @@ const ProductDetails = ({details}) => {
         <Container fluid={true} className="mt-5">
             <Row>
              <Col md="4" sm="12">
-             {items.length < 1 ?
+             {data.images.length < 1 ?
               'Loading product images' :
               (
                 <Carousel
@@ -148,7 +119,7 @@ const ProductDetails = ({details}) => {
               next={next}
               previous={previous}
               >
-              <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={gotoIndex} /> 
+              <CarouselIndicators items={data.images} activeIndex={activeIndex} onClickHandler={gotoIndex} /> 
              {slides}
              <CarouselControl direction="prev" directionText="Previous" onClickHandler={previous} /> 
              <CarouselControl direction="next" directionText="Next" onClickHandler={next} /> 
@@ -157,11 +128,8 @@ const ProductDetails = ({details}) => {
              }
                
                <div className="carousel slide" data-ride="carousel" id="carousel-1">
-                <div className="carousel-inner" role="listbox">
-                    
-                    
-                </div>
-
+                <div className="carousel-inner" role="listbox"> 
+                </div> 
            
                 <div>
                   <a className="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span className="carousel-control-prev-icon"></span><span className="sr-only">Previous</span></a>
@@ -177,7 +145,7 @@ const ProductDetails = ({details}) => {
             </div>
              </Col>
              <Col md="4" sm="12">
-              <Badge color="warning">{`Located at ${data.locationName} `} </Badge>
+              {/* <Badge color="warning">{`Located at ${data.locationName} `} </Badge> */}
                <h4>{ data.product_name }</h4>
                <p>{ data.category }</p>
                <div className="d-flex flex-row">  
@@ -191,12 +159,12 @@ const ProductDetails = ({details}) => {
                 {/* <span className="mr-2 cut">65,000</span>
                 <span className="text-success">25% OFF</span> */}
             </div>
-            <span className="mr-2">   
+            {/* <span className="mr-2">   
               <p>Packed:  {data.packed === "PACKED" ? "Yes" : "NO"} </p>
             
               <Badge color="primary">{`Available ${data.available} `} </Badge>
              </span>
-           
+            */}
             <hr />
             <div className="d-flex align-items-center mt-1 delivery"><i className="fa fa-info-circle"></i>
             <span className="ml-2">Product description <br /></span> 
@@ -206,14 +174,13 @@ const ProductDetails = ({details}) => {
 
             <div><span className="font-weight-bold">Seller:</span>
             <span className="ml-2"> {data.shopName} </span></div>
-            <div className="mt-3">
+            <span>stocks {stocks.length}</span>
+            {/* <div className="mt-3">
                 <Button className="btn0 mr-2" color="warning"  onClick={(e) => placeBid(e)}  type="button">BID NOW</Button>{" "}
                <Button className="btn btn-success" onClick={() => startChat(data.seller)} type="button">Chat Seller</Button>  
-            </div>
+            </div> */}
              </Col>
-            <Col md="4" sm="12">
-               
-                
+            {/* <Col md="4" sm="12"> 
             <div className="d-flex align-items-center mt-1 delivery"><i className="fa fa-map-marker"></i>
             <span className="ml-2">Delivery options</span>
             <br />        
@@ -238,9 +205,7 @@ const ProductDetails = ({details}) => {
                 </div>
             )
               : null
-            }
-
-            
+            } 
             {data.third_delivery ?
             (
                 <div className="d-flex align-items-center mt-2 offers mb-1"><i className="fa fa-check-square-o mt-1"></i><span className="ml-1 font-weight-bold">I will deliver to buyer beyond {data.beyond_distance} Meters</span><span className="ml-1">for {data.beyond_charge}<br /></span>
@@ -249,7 +214,15 @@ const ProductDetails = ({details}) => {
               : null
             }
            
-               </Col>
+               </Col> */}
+            </Row>
+            {/* do stocks here */}
+            <Row>
+              <Col md="12">
+                <h6>Available Stocks</h6>
+                {/* create buttons */}
+                {stockBtn}
+              </Col>
             </Row>
             <Row>
               <Col md="12">

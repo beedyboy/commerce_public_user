@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import { Row, Container, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, CardFooter, FormText, CustomInput, Button } from "reactstrap"; 
 import dataHero from "data-hero";   
 import { useMobxStores } from "../../stores/stores";  
+import { observer } from "mobx-react";
 const schema = {
     name:  {
         isEmpty: false,
@@ -18,15 +19,15 @@ const schema = {
       message: 'Quantity is required'
     }
   }; 
-const AddStock = () => {
+const AddStock = ({toggle, product_id}) => {
   const { stockStore } = useMobxStores(); 
-  const { saveStock, sending, saved, refreshForm } = stockStore;   
+  const { saveStock, sending, close, toggleClose } = stockStore;   
 
     const [formState, setFormState] = useState({
         isValid: false, 
         values: {
           id: '',
-          name: '', weight: '',  product_id: '', quantity: '',  price: '',
+          name: '', weight: '',  product_id: product_id, quantity: '',  price: '',
           packed: '', first_delivery: false, second_delivery: false, third_delivery: false, within_distance: '', within_charge:'', beyond_distance: '', beyond_charge:''
         },
         touched: {},
@@ -42,14 +43,15 @@ const AddStock = () => {
       }, [formState.values]);
        
        useEffect(() => {
-          if (saved === true) {
-            handleReset();      
+          if (close === true) {
+            handleReset(); 
+            toggle();   
 		  }
         return () => {
-          refreshForm();
+          toggleClose();
         }
-       }, [saved])
-     
+       }, [close])
+      
       
 const handleChange = event => {
     event.persist(); 
@@ -84,21 +86,22 @@ const handleChange = event => {
  
   const createStock = e => {
     e.preventDefault();
-    const fd = new FormData();   
-    fd.append('stock_name', formState.values.name);
-    fd.append('product_id', formState.values.product_id);
-    fd.append('quantity', formState.values.quantity); 
-    fd.append('weight', formState.values.weight); 
-    fd.append('price', formState.values.price); 
-    fd.append('packed', formState.values.packed); 
-    fd.append('first_delivery', formState.values.first_delivery); 
-    fd.append('second_delivery', formState.values.second_delivery); 
-    fd.append('third_delivery', formState.values.third_delivery); 
-    fd.append('within_distance', formState.values.within_distance); 
-    fd.append('within_charge', formState.values.within_charge); 
-    fd.append('beyond_distance', formState.values.beyond_distance); 
-    fd.append('beyond_charge', formState.values.beyond_charge);  
-    saveStock(fd); 
+    // const fd = new FormData();   
+    // fd.append('stock_name', formState.values.name);
+    // fd.append('product_id',  product_id);
+    // fd.append('quantity', formState.values.quantity); 
+    // fd.append('weight', formState.values.weight); 
+    // fd.append('price', formState.values.price); 
+    // fd.append('packed', formState.values.packed); 
+    // fd.append('first_delivery', formState.values.first_delivery); 
+    // fd.append('second_delivery', formState.values.second_delivery); 
+    // fd.append('third_delivery', formState.values.third_delivery); 
+    // fd.append('within_distance', formState.values.within_distance); 
+    // fd.append('within_charge', formState.values.within_charge); 
+    // fd.append('beyond_distance', formState.values.beyond_distance); 
+    // fd.append('beyond_charge', formState.values.beyond_charge);  
+     
+    saveStock(formState.values); 
   }
 const hasError = field =>
       formState.touched[field] && formState.errors[field].error;  
@@ -110,9 +113,14 @@ const handleReset = () => {
         ...formState.values,
          id: '',
           name: '',  product_id: '', weight: '', quantity: '', price: '',
-          packed: '', first_delivery: false, second_delivery: false, third_delivery: false, within_distance: '', within_charge:'', beyond_distance: '', beyond_charge:''
-       
-      } 
+          packed: '', first_delivery: false, second_delivery: false, third_delivery: false, within_distance: '', within_charge:'', beyond_distance: '', beyond_charge:'' 
+      },
+      touched:{
+        ...formState.touched,
+        name: false,  product_id: false, weight: false, quantity: false, price: false,
+        packed: false, first_delivery: false, second_delivery: false, third_delivery: false, within_distance: false, within_charge:false, beyond_distance: false, beyond_charge:false
+      },
+      errors: { }
     }));
   }
      
@@ -147,7 +155,7 @@ const handleReset = () => {
               </Col>
               </Row>
               <Row> 
-                <Col md="6">
+                <Col md="4">
                   <FormGroup className={
                         hasError('quantity') ? 'has-danger' : null} >
                     <label htmlFor="quantity">
@@ -159,7 +167,16 @@ const handleReset = () => {
                   </FormText>
                   </FormGroup>
                </Col>  
-              <Col md="6">
+              <Col md="4">
+                <FormGroup>
+                  <label htmlFor="weight">
+                    Weight
+                  </label>
+                  <Input onChange={handleChange}  name="weight" value={formState.values.weight} type="text" />
+                </FormGroup>
+              </Col> 
+
+              <Col md="4">
                 <FormGroup>
                   <label htmlFor="price">
                     Price
@@ -200,7 +217,8 @@ const handleReset = () => {
          <Row className="mt-2"> 
         <Card>
           <CardHeader> 
-          <h4>Delivery and location</h4>
+          <h4>Delivery and location 
+            <i className="fa fa-location"></i></h4>
           </CardHeader>
           <CardBody> 
               {/* Delivery */}
@@ -259,7 +277,9 @@ const handleReset = () => {
     <CardFooter>
     <Button color="primary" disabled={!formState.isValid || sending } 
         type="submit">
-            Save changes
+          {sending ? (
+            <span> Saving data  <i className="fa fa-spinner"></i></span>
+            ): 'Save changes'}
     </Button>
     
     </CardFooter>
@@ -273,4 +293,4 @@ const handleReset = () => {
     )
 }
 
-export default AddStock
+export default observer(AddStock)

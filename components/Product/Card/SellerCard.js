@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Col, Card, CardImg, CardBody, CardTitle, CardText, CardHeader,
-     Button, Modal, ModalHeader, ModalBody, CardFooter } from 'reactstrap'; 
+import { Col, Card, CardImg, CardBody, CardTitle, Button, Modal, ModalHeader, ModalBody, CardFooter } from 'reactstrap'; 
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { NoactionStar } from '../../Rating/NoactionStar';
 import ReactHtmlParser from 'react-html-parser'; 
@@ -17,7 +16,7 @@ const SellerCard = props => {
     const [stockView, setStockView] = useState(false);
     const toggle = () => setModal(!modal);
     const closeBtn = <Button className="close" onClick={toggle}>&times;</Button>;
-
+    const images = JSON.parse(product.images);
     const showStockView = () => setStockView(!stockView);
     const stockCloseBtn = <Button className="close" onClick={showStockView}>&times;</Button>;
     const linker = (data) => {
@@ -33,10 +32,11 @@ const SellerCard = props => {
                    <div className="flip-card">
                    <div className="flip-content">
                 <div className="flip-front">
-               {/* <CardImg top width="100%" style={{height: '200px'}}
-                src={`${serverUrl}${product.main_image}`}
-                alt={product.product_name} /> */}
+              <CardImg top width="100%" style={{height: '200px'}}
+                src={images[0]}
+                alt={product.product_name} /> 
                     {/* <CardTitle>{product.product_name}</CardTitle>  */}
+                    
                     <p className={styles.price}>{product.price}</p>
                     <div className={styles.rating}><NoactionStar total="4" /></div>
                      
@@ -62,15 +62,18 @@ const SellerCard = props => {
                 
                </CardBody>
                <CardFooter>
-               <Button color="warning" onClick={toggle}>Add Stock</Button> {" "}
-               <Button color="info" onClick={viewStock}>View Stocks</Button>
+               <Button size="sm" color="warning" className="mt-1" onClick={toggle}>Add Stock</Button> {" "}
+               {/* <Button size="sm" color="info" onClick={showStockView}>View Stocks</Button> */}
+                <Link href="/seller/[id]" as={`/seller/${product.id}`}> 
+                     <a className="btn btn-info btn-sm mt-1">View Stock</a>
+                  </Link>
                </CardFooter>
                 </Card>
             </Col>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle} close={closeBtn}>Stock</ModalHeader>
                 <ModalBody>
-                    <AddStock />
+                    <AddStock toggle={toggle} product_id={product.id} />
                 </ModalBody>
             </Modal>
 
