@@ -17,6 +17,7 @@ const ProductView = ({view}) => {  const router = useRouter();
     const { product, getProductById } = productStore; 
     const { allProductStocks:stocks, productStock } = stockStore; 
      const { bidNow } = orderStore;
+     const [currentId, setCurrentId] = useState(''); 
      const [currentItem, setCurrentItem] = useState(''); 
    const [data, setData] = useState({
            id: '', 
@@ -55,15 +56,37 @@ const ProductView = ({view}) => {  const router = useRouter();
       })); 
     }    
   }, [product]); 
+
+    
+  useEffect(() => {
+    const rp = stocks && stocks.length > 0;  
+    if(rp) { 
+      defaultStock(stocks);
+    }    
+  }, [stocks]); 
+
+  const defaultStock = stockData => {
+     const result = stockData.filter(d => d.featured === 'NO');
+     console.log({result});
+     if (result.length > 0) {
+        pickStock(result.id);
+     } else {
+         pickStock(stockData[0].id);
+     }
+  }
+  const pickStock =  (id) => {
+    setCurrentId(id);
+    setCurrentItem('stock'+id)
+  }
   const slides = data.images.map((item) => {
     return (
-        <img key={shortId.generate()} onClick={ e => change_image(e.target.src)} src={`${item}`} alt={item} width="70" />  
+        <img key={shortId.generate()} onClick={ e => change_image(e.target.src)} src={`${item}`} alt={item} width="50" />  
     );
   });
    const stockBtn = stocks && stocks.map((item, i) => {
     return ( 
     <label className={styles.radio} key={shortId.generate()}>
-        <input type="radio" name="size" value={i} checked={currentItem === 'stock'+i ? true: false} onChange={e => setCurrentItem('stock'+i)} /> 
+        <input type="radio" name="size" value={i} checked={currentItem === 'stock'+item.id ? true: false} onChange={e => pickStock(item.id)} /> 
         <span>Stock {i+ 1}</span>
  </label> 
     );
@@ -71,7 +94,7 @@ const ProductView = ({view}) => {  const router = useRouter();
 
   const stockList = stocks && stocks.map((item, i) => {
     return ( 
-    <div key={shortId.generate()} className={`mt-5 mb-5 ${currentItem === 'stock'+i ? '': 'd-none'}`}>
+    <div key={shortId.generate()} className={`mt-5 mb-5 ${currentItem === 'stock'+item.id ? '': 'd-none'}`}>
      
         <Row>
           <Col md="12">
@@ -102,7 +125,7 @@ const ProductView = ({view}) => {  const router = useRouter();
 
             <Col md="12">
             <div className={`${styles.cart} mt-4 align-items-center`}> 
-                <button className="btn btn-danger text-uppercase mr-2 px-4">Place Bid</button>
+             <Button className="btn0  text-uppercase mr-2 px-4" color="warning"  onClick={(e) => placeBid(item.id)}  type="button">Place Bid</Button> 
             </div>
             </Col>
                       </Row>
@@ -157,22 +180,33 @@ const ProductView = ({view}) => {  const router = useRouter();
    
     const change_image =  e => {
         setActiveImage(e);
+    } 
+
+const placeBid = e => { 
+    console.log('items', e);
     }
-    // console.log({view})
+    const startChat = (seller) => { 
+    Chatter(seller)
+    }
     return (
         <Fragment>
-            <MainLayout>
-                
+            <Head>
+                <title>
+                    {data.product_name? data.product_name : 'Product details'}
+                </title>
+            </Head>
+            <MainLayout> 
             <Container fluid={true} className="mt-5 mb-5">
                <Row className="d-flex justify-content-center">
         <Col md="12">
             <div className={styles.card}>
                 <Row>
                     <Col md="4">
-                        <div className="images p-3">
-                            <div className="text-center p-4">
-                                <img id="main-image" src={`${activeImage !== ''? activeImage : data.images[0]}`} width="250" /> </div>
-                            <div className="thumbnail text-center">
+                        <div className="images">
+                            <div className="text-center">
+                                <img id="main-image" src={`${activeImage !== ''? activeImage : data.images[0]}`} width="250" />
+                            </div>
+                            <div className={`${styles.thumbnail}  p-3 text-center`}>
                                 {slides}
                                    </div>
                         </div>
@@ -183,23 +217,21 @@ const ProductView = ({view}) => {  const router = useRouter();
                                 <div className="d-flex align-items-center"> <i className="fa fa-long-arrow-left"></i> <span className="ml-1">Back</span> </div> <i className="fa fa-shopping-cart text-muted"></i>
                                 <i className="fa fa-heart text-muted"></i> <i className="fa fa-share-alt text-muted"></i>
                             </div>
-                            <div className="mt-4 mb-3"> 
+                            <div className="mt-2 mb-1"> 
                                 <h5 className="text-uppercase">{data.product_name}</h5>
-                                {/* <div className="price d-flex flex-row align-items-center"> <span className={styles.actPrice}>$20</span>
-                                    <div className="ml-2"> <small className="dis-price">$20</small> <span>40% OFF</span> </div>
-                                </div> */}
+                                 
                             </div>
                             <div className={styles.about}>
                                 {ReactHtmlParser(data.description)} 
                             </div>
-                            <div className="sizes mt-5">
+                            <div className="sizes mt-2">
                                  <h6 className="text-uppercase">Stock</h6>
                                  {stockBtn}
                                 
                             </div>
                           
                              {/* stocklkist here */}
-                        {stockList}
+                                {stockList}
                         </div>
                        
                     </Col>
@@ -225,6 +257,68 @@ const ProductView = ({view}) => {  const router = useRouter();
             </div>
         </Col>
     </Row>
+
+    <Row>
+              <Col md="12">
+             <section className="section sponsored" id="section-rooms">
+            <Card>
+                <CardBody> 
+            <Row className="justify-content-center text-center mb-5">
+            <Col md="12"> 
+                <h3 className="heading pull-left" data-aos="fade-up" data-aos-delay="100">Sponsored products</h3>
+               </Col>
+            </Row>
+            <Row>
+            <Col md="6" lg="4" data-aos="fade-up">
+                <Link href="/"> 
+                    <a className="room">
+                    <figure className="img-wrap">
+                    <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
+                    </figure>
+                    <div className="p-3 text-center room-info">
+                        <h2>Product one</h2>
+                        <span className="text-uppercase letter-spacing-1">90$ / per kg</span>
+                    </div>  
+                    </a>
+                </Link>
+                </Col>  
+                <Col md="6" lg="4" data-aos="fade-up">
+                <Link href="/"> 
+                    <a className="room">
+                    <figure className="img-wrap">
+                        <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
+                    </figure>
+                    <div className="p-3 text-center room-info">
+                        <h2>Product Two</h2>
+                        <span className="text-uppercase letter-spacing-1">120$ / per kg</span>
+                    </div>  
+                    </a>
+                </Link>
+                </Col>  
+
+                <Col md="6" lg="4" data-aos="fade-up">
+                <Link href="/"> 
+                   <a className="room">
+                   <figure className="img-wrap">
+                        <img src="/assets/images/img_3.jpg" alt="Free website template" className="img-fluid mb-3"/>
+                    </figure>
+                    <div className="p-3 text-center room-info">
+                        <h2>Product Three</h2>
+                        <span className="text-uppercase letter-spacing-1">250$ / per kg</span>
+                    </div>  
+                   </a>
+                </Link>
+                </Col>  
+            </Row>
+            </CardBody>  
+            </Card>
+            </section>
+
+              </Col>
+            
+            
+            </Row>
+
         </Container>
             </MainLayout>
         </Fragment>
@@ -235,4 +329,4 @@ ProductView.getInitialProps = async ({ query }) => {
     return {view: query.view}
   }
 
-export default ProductView;
+export default observer(ProductView);
