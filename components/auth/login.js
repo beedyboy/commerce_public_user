@@ -23,7 +23,7 @@ const schema = {
   };
  
 const Login = props => {  
-    const { initial_data } = props; 
+    const { initial_data, toggle } = props; 
     const { authStore } = useMobxStores(); 
     const { isAuth, login, id, preferred, token: buyer_token, loginSuccessful } = authStore;
     const [formState, setFormState] = useState({
@@ -68,10 +68,11 @@ const Login = props => {
           
            
           }
-          //loginSuccessful();
+          toggle();
         }
         return () => {
             setTimeout( loginSuccessful(), 3000);
+            
         }
     }, [isAuth]);
     useEffect(() => {  
@@ -129,7 +130,7 @@ const Login = props => {
                     <Input type="email" name="email" onChange={handleChange}
                      value={ formState.values.email || '' } 
                      invalid={ hasError('email') } className="form-control" placeholder="Enter email" />
-                      <FormFeedback  invalid={ hasError('email')}>
+                      <FormFeedback>
             {
                   hasError('email') ? formState.errors.email && formState.errors.email.message : null
                 } 
@@ -141,7 +142,7 @@ const Login = props => {
                     <Input type="password" name="password" onChange={handleChange}  
                             placeholder="********" value={ formState.values.password || '' }
                 invalid={ hasError('password') } className="form-control" />
-              <FormFeedback invalid={ hasError('password') }>
+              <FormFeedback>
             {
                   hasError('password') ? formState.errors.password && formState.errors.password.message : null
                 } 

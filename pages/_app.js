@@ -9,8 +9,10 @@ import './../public/assets/css/flip.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'; 
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
 import 'react-fancybox/lib/fancybox.css'
-import 'font-awesome/css/font-awesome.min.css';
+import 'font-awesome/css/font-awesome.min.css'; 
+import 'react-multi-carousel/lib/styles.css';
 import 'aos/dist/aos.css'; 
 import { getStores, StoreProvider } from '../stores/stores';  
 import Responder  from '../services/Beedy';

@@ -8,15 +8,36 @@ import { useMobxStores } from '../../stores/stores';
 import { MainLayout } from '../../templates'; 
 import { Chatter } from "../../services/Chatter";
 import shortId from 'short-id';
+import Carousel from "react-multi-carousel";
 import Link from 'next/link';
-import styles from './productview.module.css'
+import styles from './productview.module.css' 
 import { FaRainbow } from 'react-icons/fa';
-
-const ProductView = ({view}) => {  const router = useRouter();
+import ListCard from '../../components/Product/Card/ListCard';
+import { isMobile } from 'react-device-detect';
+const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+      slidesToSlide: 3 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    }
+  };
+  
+const ProductView = ({view}) => { 
+    //  const router = useRouter();
     const { productStore, stockStore, orderStore } = useMobxStores();
-    const { product, getProductById } = productStore; 
+    const { product, getProductById, homeProducts } = productStore; 
     const { allProductStocks:stocks, productStock } = stockStore; 
-     const { bidNow } = orderStore;
+     const { bidNow, sending } = orderStore;
      const [currentId, setCurrentId] = useState(''); 
      const [currentItem, setCurrentItem] = useState(''); 
    const [data, setData] = useState({
@@ -38,6 +59,7 @@ const ProductView = ({view}) => {  const router = useRouter();
         productStock(id); 
     }, [])
      
+    let count = homeProducts.length;
   useEffect(() => {
     const rp = product && product.product_name;  
     if(rp) { 
@@ -91,7 +113,7 @@ const ProductView = ({view}) => {  const router = useRouter();
  </label> 
     );
   });
-
+  
   const stockList = stocks && stocks.map((item, i) => {
     return ( 
     <div key={shortId.generate()} className={`mt-5 mb-5 ${currentItem === 'stock'+item.id ? '': 'd-none'}`}>
@@ -125,7 +147,12 @@ const ProductView = ({view}) => {  const router = useRouter();
 
             <Col md="12">
             <div className={`${styles.cart} mt-4 align-items-center`}> 
-             <Button className="btn0  text-uppercase mr-2 px-4" color="warning"  onClick={(e) => placeBid(item.id)}  type="button">Place Bid</Button> 
+             <Button className="btn0  text-uppercase mr-2 px-4" color="warning"  onClick={(e) => placeBid(item.id, item.shop_id)}  type="button" disabled={sending}> 
+             {sending ? (
+            <span> Sending to seller  <i className="fa fa-spinner"></i></span>
+            ): 'Place Bid'}
+             
+             </Button> 
             </div>
             </Col>
                       </Row>
@@ -182,12 +209,19 @@ const ProductView = ({view}) => {  const router = useRouter();
         setActiveImage(e);
     } 
 
-const placeBid = e => { 
-    console.log('items', e);
+const placeBid = (stock_id, shop_id,) => { 
+    const data = {
+        stock_id,
+        shop_id
+    }
+    console.log('data', data);
+    bidNow(data);
     }
     const startChat = (seller) => { 
-    Chatter(seller)
+    // Chatter(seller)
     }
+  
+    // console.log({props})
     return (
         <Fragment>
             <Head>
@@ -258,64 +292,66 @@ const placeBid = e => {
         </Col>
     </Row>
 
-    <Row>
-              <Col md="12">
-             <section className="section sponsored" id="section-rooms">
-            <Card>
-                <CardBody> 
-            <Row className="justify-content-center text-center mb-5">
-            <Col md="12"> 
-                <h3 className="heading pull-left" data-aos="fade-up" data-aos-delay="100">Sponsored products</h3>
-               </Col>
-            </Row>
-            <Row>
-            <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                    <a className="room">
-                    <figure className="img-wrap">
-                    <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Product one</h2>
-                        <span className="text-uppercase letter-spacing-1">90$ / per kg</span>
-                    </div>  
-                    </a>
-                </Link>
-                </Col>  
-                <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                    <a className="room">
-                    <figure className="img-wrap">
-                        <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Product Two</h2>
-                        <span className="text-uppercase letter-spacing-1">120$ / per kg</span>
-                    </div>  
-                    </a>
-                </Link>
-                </Col>  
+    <Row> 
+        <Col md="12">
+        <section className="section sponsored" id="section-rooms">
+    <Card>
+        <CardBody> 
+    <Row className="justify-content-center text-center mb-5">
+    <Col md="12"> 
+    <h3 className="heading pull-left" data-aos="fade-up" data-aos-delay="100">Sponsored products</h3>
+        </Col>
+    </Row> 
+        <div data-aos="fade-up">
+        <Carousel
+            swipeable={true}
+            draggable={false}
+            showDots={true}
+            responsive={responsive}
+            ssr={true} // means to render carousel on server-side.
+            infinite={true}
+            autoPlay={isMobile ? true : false}
+            autoPlaySpeed={1000}
+            keyBoardControl={true}
+            customTransition="all .5"
+            transitionDuration={500}
+            containerClass="carousel-container"
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            // deviceType={props.deviceType}
+            dotListClass="custom-dot-list-style"
+            itemClass="carousel-item-padding-40-px"
+                >  
+{count > 0 ?
+        <>
+            {homeProducts && homeProducts.map((product) =>
+            <ListCard product={product} key={product.id} /> 
+            )}
+        </>
+            : 
+            ( 
+            <Col md="12">
+                <h1>
+                Product is empty at the moment
+            </h1>
+            </Col>
+            )
+            }
+    {/* <div>
+    <figure className="img-wrap">
+                <img src="/assets/images/img_3.jpg" alt="Free website template" className="img-fluid mb-3"/>
+            </figure>
+            <div className="p-3 text-center room-info">
+                <h2>Product Three</h2>
+                <span className="text-uppercase letter-spacing-1">250$ / per kg</span>
+            </div>  
+    </div> */}
+        </Carousel>
+        </div>  
+    </CardBody>  
+    </Card>
+    </section>
 
-                <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                   <a className="room">
-                   <figure className="img-wrap">
-                        <img src="/assets/images/img_3.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Product Three</h2>
-                        <span className="text-uppercase letter-spacing-1">250$ / per kg</span>
-                    </div>  
-                   </a>
-                </Link>
-                </Col>  
-            </Row>
-            </CardBody>  
-            </Card>
-            </section>
-
-              </Col>
-            
+        </Col> 
             
             </Row>
 

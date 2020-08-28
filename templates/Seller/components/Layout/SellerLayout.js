@@ -5,22 +5,14 @@ import Footer from '../Footer';
 import Router from 'next/router';
 import { Container, Row, Col } from 'reactstrap';
 import CookieService from '../../../../services/CookieService'; 
-import SellerSidebar from '../Sidebar/Sidebar';
-import Link from 'next/link';
+import SellerSidebar from '../Sidebar/Sidebar'; 
   
 const SellerLayout = props => { 
   const [sidebar, setSidebar] = useState(false); 
-  const [openAccount, setOpenAccount] = useState(false); 
-  const [isOpen, setIsOpen] = useState(true); 
-    const [scroll, setScroll] = useState('');  
-    const [doForm, setDoForm] = useState({
-        login: 'none',
-        register: 'none'
-    });   
-
+  const [openAccount, setOpenAccount] = useState(false);  
+    const [scroll, setScroll] = useState(''); 
     const openSideBar = () => setSidebar(true);
-    const closeSideBar = () => setSidebar(false);
-  const toggle = () => setIsOpen(!isOpen);
+    const closeSideBar = () => setSidebar(false); 
   useEffect(() => {
       const token = CookieService.get('access_token');
       if (!token) {
@@ -51,14 +43,7 @@ const SellerLayout = props => {
         setScroll("");
       }
       
-  }
-  const handleForm = (old, item) => { 
-    setDoForm(prevState => ({
-         ...prevState,
-         [old]: 'none',
-         [item]: prevState[item] === 'none' ? 'block' : 'none' 
-        })); 
-  }
+  } 
   
     return (
          <Fragment>
@@ -74,39 +59,10 @@ const SellerLayout = props => {
           </div>
           <div className="seller_main_container">
             <div className="top_navbar">
-              <div className="hamburger">
-                <div className="hamburger__inner">
-                  <i className="fa fa-bars" aria-hidden="true" onClick={openSideBar}></i>
-                </div>
-              </div>
-              <ul className="menu">
-              <li><Link href="/"><a>Blogs</a></Link></li>
-              <li><Link href="/"><a>Contact</a></Link></li>
-              <li><Link href="/"><a>Product</a></Link></li>
-              </ul>
-              <ul className="right_bar">
-              <li><Link href="/"><a><i className="fa fa-bell"></i></a></Link></li>
-              <li><span onClick={e => setOpenAccount(!openAccount)}><i className="fa fa-user"></i></span>
-              
-              </li>
-              </ul>
-              <div className={`accounts ${openAccount? 'box-active': ''}`} id="box">
-                  <h2>Notifications - <span>2</span></h2>
-                  <div className="accounts-item"> <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img" />
-                      <div className="text">
-                          <h4>Samso aliao</h4>
-                          <p>Samso Nagaro Like your home work</p>
-                      </div>
-                  </div>
-                  <div className="accounts-item"> <img src="https://img.icons8.com/flat_round/64/000000/vote-badge.png" alt="img" />
-                      <div className="text">
-                          <h4>John Silvester</h4>
-                          <p>+20 vista badge earned</p>
-                      </div>
-                  </div>
-              </div>
-            </div>
-               <Container>
+             
+             <TopBar openAccount={openAccount} openSideBar={openSideBar} setOpenAccount={setOpenAccount} />
+             </div>
+               <Container >
                {props.children}
                </Container>
           </div>

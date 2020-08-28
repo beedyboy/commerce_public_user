@@ -49,4 +49,4 @@ class CategoryStore {
 
 }  
  
-export default CategoryStore;
+export default CategoryStore; 

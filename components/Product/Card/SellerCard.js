@@ -4,8 +4,7 @@ import { Col, Card, CardImg, CardBody, CardTitle, Button, Modal, ModalHeader, Mo
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { NoactionStar } from '../../Rating/NoactionStar';
 import ReactHtmlParser from 'react-html-parser'; 
-import styles from './Card.module.css'; 
-import { serverUrl } from '../../../services/APIService';
+import styles from './Card.module.css';  
  import Link  from 'next/link'
 import AddStock from '../../stock/add-stock';
 import StockTable from '../../stock/StockTable';
@@ -26,7 +25,7 @@ const SellerCard = props => {
     }
     return (
         <Fragment>
-            <Col sm="12" md="3">
+            <Col sm="12" md="4">
                 <Card>                     
                <CardBody className={styles.cardBody}>
                    <div className="flip-card">

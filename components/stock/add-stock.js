@@ -85,22 +85,7 @@ const handleChange = event => {
   }
  
   const createStock = e => {
-    e.preventDefault();
-    // const fd = new FormData();   
-    // fd.append('stock_name', formState.values.name);
-    // fd.append('product_id',  product_id);
-    // fd.append('quantity', formState.values.quantity); 
-    // fd.append('weight', formState.values.weight); 
-    // fd.append('price', formState.values.price); 
-    // fd.append('packed', formState.values.packed); 
-    // fd.append('first_delivery', formState.values.first_delivery); 
-    // fd.append('second_delivery', formState.values.second_delivery); 
-    // fd.append('third_delivery', formState.values.third_delivery); 
-    // fd.append('within_distance', formState.values.within_distance); 
-    // fd.append('within_charge', formState.values.within_charge); 
-    // fd.append('beyond_distance', formState.values.beyond_distance); 
-    // fd.append('beyond_charge', formState.values.beyond_charge);  
-     
+    e.preventDefault(); 
     saveStock(formState.values); 
   }
 const hasError = field =>
@@ -125,10 +110,8 @@ const handleReset = () => {
   }
      
     return (
-    <Fragment>
-        
-      <Container>
-           
+    <Fragment> 
+      <Container> 
         <Form onSubmit={createStock}>
       <Row>
       <Col md="12" lg="12" sm="12">
@@ -286,8 +269,7 @@ const handleReset = () => {
           
         </Form>
        
-        </Container>
-      
+        </Container> 
     </Fragment>
      
     )

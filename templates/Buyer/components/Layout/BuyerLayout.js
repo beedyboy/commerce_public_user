@@ -5,18 +5,16 @@ import TopBar from '../TopBar';
 import Footer from '../Footer';  
 import { Container, Row, Col } from 'reactstrap';
 import Storage from '../../../../services/Storage'; 
+import BuyerSidebar from '../Sidebar/Sidebar';
   
  const BuyerLayout = props => {
-    const [isOpen, setIsOpen] = useState(true); 
-    const [scroll, setScroll] = useState('');  
-    const [doForm, setDoForm] = useState({
-        login: 'none',
-        register: 'none'
-    });  
-
-    
-
-  const toggle = () => setIsOpen(!isOpen);
+   
+  const [sidebar, setSidebar] = useState(false); 
+  const [openAccount, setOpenAccount] = useState(false);  
+    const [scroll, setScroll] = useState(''); 
+    const openSideBar = () => setSidebar(true);
+    const closeSideBar = () => setSidebar(false); 
+  
    useEffect(() => {
       const token = Storage.get('token');
       if (!token) {
@@ -48,35 +46,31 @@ import Storage from '../../../../services/Storage';
       }
       
   }
-  const handleForm = (old, item) => { 
-    setDoForm(prevState => ({
-         ...prevState,
-         [old]: 'none',
-         [item]: prevState[item] === 'none' ? 'block' : 'none' 
-        })); 
-  }
-  
+   
     return (
-         <Fragment>
-            <TopBar scroll={scroll} handleForm={handleForm} doForm={doForm} isOpen={isOpen} toggle={toggle} />
-            <Container fluid>
-              <Row>
-              <Col xs={2}>   
-          
-            </Col>
-              </Row>
-
-                <Row> 
-                    <Col  xs={12}>
-                    {props.children}
-
-                    </Col> 
-                </Row>
-
-            </Container> 
-            
-             <Footer />
-         </Fragment>
+      <Fragment>
+      <div className={`wrapper ${sidebar? 'active' : ''}`}>
+   <div className="rsidebar">
+     <div className="bg_shadow"></div>
+     <div className="sidebar__inner">
+   <div className="close">
+     <i className="fa fa-times" aria-hidden="true" onClick={closeSideBar}></i>
+   </div>
+       <BuyerSidebar />
+   </div>
+   </div>
+   <div className="seller_main_container">
+     <div className="top_navbar">
+      
+      <TopBar openAccount={openAccount} openSideBar={openSideBar} setOpenAccount={setOpenAccount} />
+      </div>
+        <Container >
+        {props.children}
+        </Container>
+   </div>
+ </div>
+  </Fragment>
     )
 }
-export default BuyerLayout;
+export default BuyerLayout; 
+ 

@@ -33,7 +33,7 @@ const TopBar = (props) => {
                     </DropdownToggle>
                     <DropdownMenu> 
                     <DropdownItem>
-                   <Link href="buyer/dashboard">
+                   <Link href="/buyer/dashboard">
                        <a className="nav-link">Profile</a> 
                     </Link> 
                     </DropdownItem>
@@ -97,7 +97,11 @@ const switcher = () => {
             </Link> 
             </NavItem> 
              
-            {switcher()}
+            <div className={`accounts ${openAccount? 'box-active': ''}`} id="box">
+                  <h2>Account </h2> 
+                  {switcher()}
+              </div>
+          
             {authenticatorLinks()}
         </Nav>
         </Collapse>

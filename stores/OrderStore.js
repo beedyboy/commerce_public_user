@@ -4,9 +4,7 @@ import api from "../services/APIService";
 import Storage from "../services/Storage";
 import { Beedy } from "../services/Beedy";
 
-class OrderStore { 
-  
-  
+class OrderStore {  
   
   @observable error = false;
   @observable filter = 'ALL';
@@ -15,6 +13,8 @@ class OrderStore {
   @observable page = {}; 
   @observable saved = false; 
   @observable sending = false; 
+  @observable bid = []; 
+  @observable bidAuction = []; 
   @observable sellerBids = []; 
   @observable buyerBids = []; 
 
@@ -44,9 +44,8 @@ class OrderStore {
           }
          else  if(res.data.status === 200) {
           this.saved = true;
-          Beedy('success', res.data.msg); 
-         }
-         
+          Beedy('success', res.data.message); 
+         } 
         })
     .catch(err => {
      console.log('bid_now', err.code);
@@ -62,7 +61,7 @@ class OrderStore {
       }
     }
 
-   @action  sellerBidsById = (id) => {
+   @action  sellerBidsById = () => {
    try {
 	 this.loading = true;
     api.get('ordering/seller/bids').then( res => {  
@@ -79,7 +78,7 @@ class OrderStore {
    }
   }
 
-  @action  buyerBidsById = (id) => {
+  @action  buyerBidsById = () => {
    try {
      this.loading = true;
     api.get('ordering/buyer/bids').then( res => {  
@@ -96,9 +95,156 @@ class OrderStore {
    }
   }
 
-   
-  @computed get filteredShop() {
-    return '';
+  @action getBidById = (id) => {
+    try {
+    this.loading = true;
+     api.get('ordering/bid/' + id).then( res => {   
+        this.loading = false; 
+          if (res.data.status === 200) {
+            this.bid = res.data.data;
+          }
+     })
+     .catch(err => {
+      console.log('getBidById', err.code);
+      console.log('getBidById', err.message);
+      console.log('getBidById', err.stack);
+     });
+    } catch(e) {
+   console.error(e);
+    }
+   }
+  @action getBidAuction = (id) => {
+    try {
+      this.loading = true;
+     api.get('ordering/bids'+ id + '/auction').then( res => {  
+           this.loading = false; 
+           if (res.data.status === 200) { 
+             this.bidAuction = res.data.data;
+           }
+     })
+     .catch(err => {
+      console.log('getBidAuction', err.code);
+      console.log('getBidAuction', err.message);
+      console.log('getBidAuction', err.stack);
+     });
+    } catch(e) {
+   console.error(e);
+    }
+   }
+ 
+ @action buyerCreateAuction = (data) => { 
+    try {
+      this.sending = true;
+      api.post('ordering/buyer/auction', data).then(res => {
+        this.sending = false;
+        if(res.data.status === 500) {
+          Beedy('error', res.data.msg);
+          Storage.logout();
+        }
+       else  if(res.data.status === 200) {
+        this.saved = true;
+        Beedy('success', res.data.message); 
+       } 
+      })
+  .catch(err => {
+   console.log('buyerCreateAuction', err.code);
+   console.log('buyerCreateAuction', err.message);
+   console.log('buyerCreateAuction', err.stack);
+  });
+    } catch(err) {
+      if(err.response.status === 500) {
+        console.log("There was a problem with the server");
+      } else {
+        console.log(err.response.data.msg)
+      }
+    }
+  }
+  
+ @action sellerCreateAuction = (data) => { 
+  try {
+    this.sending = true;
+    api.post('ordering/seller/auction', data).then(res => {
+      this.sending = false;
+      if(res.data.status === 500) {
+        Beedy('error', res.data.msg);
+        Storage.logout();
+      }
+     else  if(res.data.status === 200) {
+      this.saved = true;
+      Beedy('success', res.data.message); 
+     } 
+    })
+.catch(err => {
+ console.log('sellerCreateAuction', err.code);
+ console.log('sellerCreateAuction', err.message);
+ console.log('sellerCreateAuction', err.stack);
+});
+  } catch(err) {
+    if(err.response.status === 500) {
+      console.log("There was a problem with the server");
+    } else {
+      console.log(err.response.data.msg)
+    }
+  }
+}
+
+@action buyerToggleBuyer = (data) => { 
+  try {
+    this.sending = true;
+    api.post('ordering/buyer/toggle/buyer', data).then(res => {
+      this.sending = false;
+      if(res.data.status === 500) {
+        Beedy('error', res.data.msg);
+        Storage.logout();
+      }
+     else  if(res.data.status === 200) {
+      this.saved = true;
+      Beedy('success', res.data.message); 
+     } 
+    })
+.catch(err => {
+ console.log('buyerToggleBuyer', err.code);
+ console.log('buyerToggleBuyer', err.message);
+ console.log('buyerToggleBuyer', err.stack);
+});
+  } catch(err) {
+    if(err.response.status === 500) {
+      console.log("There was a problem with the server");
+    } else {
+      console.log(err.response.data.msg)
+    }
+  }
+}
+
+@action sellerToggleSeller = (data) => { 
+  try {
+    this.sending = true;
+    api.post('ordering/seller/toggle/seller', data).then(res => {
+      this.sending = false;
+      if(res.data.status === 500) {
+        Beedy('error', res.data.msg);
+        Storage.logout();
+      }
+     else  if(res.data.status === 200) {
+      this.saved = true;
+      Beedy('success', res.data.message); 
+     } 
+    })
+.catch(err => {
+ console.log('sellerToggleSeller', err.code);
+ console.log('sellerToggleSeller', err.message);
+ console.log('sellerToggleSeller', err.stack);
+});
+  } catch(err) {
+    if(err.response.status === 500) {
+      console.log("There was a problem with the server");
+    } else {
+      console.log(err.response.data.msg)
+    }
+  }
+}
+  @computed get auction() {
+    return Object.keys(this.bidAuction || {}).map(key => ({...this.bidAuction}));
   }
    
 

@@ -11,7 +11,7 @@ import { BuyerLayout } from "../../templates";
 const BuyerProfile = () => { 
   const { userStore, locationStore} = useMobxStores();  
 //   const { buyer, updateProfile, setResponse, response, message  } = companyStore;
-const {  buyer, getBuyerProfile, updateBuyer } = userStore;
+const {  buyerProfile: buyer, getBuyerProfile, updateBuyer } = userStore;
 const { location } = locationStore; 
 const [activeTab, setActiveTab] = useState('1'); 
 const changeTab = tab => {
@@ -31,20 +31,20 @@ const changeTab = tab => {
   useEffect(() => {
     getBuyerProfile(); 
 }, []);
-  useEffect(() => {
+  useEffect(() => { 
     const data = buyer && buyer.id;  
     if(data) {
       setData(state => ({
         ...state, 
-          id: buyer[0].id,
-          email: buyer[0].email,
-          firstname: buyer[0].firstname,
-          lastname: buyer[0].lastname,
-          phone_number: buyer[0].phone_number,
-          location: buyer[0].location,
-          gender: buyer[0].gender,
-          nickname: buyer[0].nickname,
-          status: buyer[0].status 
+          id: buyer.id,
+          email: buyer.email,
+          firstname: buyer.firstname,
+          lastname: buyer.lastname,
+          phone_number: buyer.phone_number,
+          // location: buyer.location,
+          gender: buyer.gender,
+          nickname: buyer.nickname,
+          status: buyer.status 
       }));
     }
      

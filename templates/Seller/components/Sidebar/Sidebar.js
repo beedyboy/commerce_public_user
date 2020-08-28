@@ -32,11 +32,9 @@ const SellerSidebar = props => {
                   <div className="title">Products</div> 
                 </a> 
                 </Link>
-              </li>
-
-
+              </li> 
               <li>
-              <Link href="/seller/profile"> 
+              <Link href="/seller/seller-bids"> 
               <a> <div className="icon"><i className="fa fa-gavel"></i></div>
                   <div className="title">Bids</div> 
                 </a> 

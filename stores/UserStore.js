@@ -28,8 +28,8 @@ class UserStore {
    try {
 	  api.get('user/buyer/profile/').then( res => { 
       if(res.data.status === 200) {
-        this.buyer = res.data.data[0];
-      }
+        this.buyer = res.data.data;
+      } 
     })
     .catch(err => {
      console.log('getBuyerProfile', err.code);
@@ -196,6 +196,11 @@ class UserStore {
  }
   @computed get sellerProfile() { 
     return Object.keys(this.profiles || {}).map(key => ({...this.profiles[key], uid: key}));
+    
+    }
+    
+  @computed get buyerProfile() {  
+    return Object.keys(this.buyer || {}).map(key =>  ({...this.buyer[key], uid: key}))[0];
     
     }
   

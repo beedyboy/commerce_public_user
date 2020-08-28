@@ -8,7 +8,7 @@ let urls = {
 }
  
 const  api = Axios.create({
-    baseURL: urls.development +'api/',
+    baseURL: urls.production +'api/',
     responseType: 'json',
     // timeout: 10000,
     withCredentials: true,
@@ -21,7 +21,7 @@ const  api = Axios.create({
     }
   });
 
-  export const serverUrl = urls.development;
-  export const ENDPOINT = urls.development;
+  export const serverUrl = urls.production;
+  export const ENDPOINT = urls.production;
 
   export default  api;
