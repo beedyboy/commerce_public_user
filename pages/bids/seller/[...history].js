@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Row, Container, Col, Badge, Button, Card, CardBody,  Modal, ModalHeader, ModalBody } from 'reactstrap';
 import Head from 'next/head';  
 import { observer } from 'mobx-react'    
-import { MainLayout } from '../../templates';  
+// import { MainLayout } from '../../templates';  
 import shortId from 'short-id'; 
 import { useMobxStores } from '../../../stores/stores'; 
 import { AuctionHistory } from '../../../components/Bid/AuctionHistory';
@@ -160,7 +160,7 @@ const stockDetails = () => {
                     {data.product_name? data.product_name : 'Bid details'}
                 </title>
             </Head>
-            <MainLayout> 
+            <SellerLayout> 
             <Container fluid={true} className="mt-5 mb-5">
              <Row className="d-flex justify-content-center">
                  <Col md="4">
@@ -245,7 +245,7 @@ const stockDetails = () => {
     </Row> */}
  
         </Container>
-            </MainLayout>
+            </SellerLayout>
         </Fragment>
     )
 }
