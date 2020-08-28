@@ -66,7 +66,7 @@ const authenticatorLinks = () => {
     } 
 }
 
-const handleForm = (old, item) => { 
+const handleForm = () => { 
       toggleLogin();
   }
  
@@ -99,7 +99,7 @@ const createBuyer = () => {
              <Fragment>
                   <div className="accounts-item"> 
           <div className="text">
-          <span className="nav-link" onClick={() => handleForm('register','login')}>Buyer Login</span>
+          <span className="nav-link" onClick={handleForm}>Buyer Login</span>
           </div>
          </div>  
              </Fragment>

@@ -64,12 +64,8 @@ const TopBar = ({openAccount, openSideBar, setOpenAccount}) => {
 
     } 
 }
-const handleForm = (old, item) => { 
-    if(old === 'register') {
-        toggleLogin()
-    } else {
-        toggleRegister()
-    } 
+const handleForm = () => { 
+    toggleLogin()
   }
  
 
@@ -100,7 +96,7 @@ const createSeller = () => {
              <Fragment>
                   <div className="accounts-item"> 
           <div className="text">
-          <span className="nav-link" onClick={() => handleForm('register','login')}>Buyer Login</span>
+          <span className="nav-link" onClick={handleForm}>Seller Login</span>
           </div>
          </div>  
              </Fragment> 

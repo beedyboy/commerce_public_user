@@ -9,10 +9,8 @@ import TopBar from '../TopBar';
   // console.log('maoin', history);
     const [isOpen, setIsOpen] = useState(false); 
     const [scroll, setScroll] = useState('');  
-    const [doForm, setDoForm] = useState({
-        login: 'none',
-        register: 'none'
-    });  
+   
+  const [openAccount, setOpenAccount] = useState(false); 
  
   const toggle = () => setIsOpen(!isOpen);
   useEffect(() => {
@@ -54,7 +52,7 @@ import TopBar from '../TopBar';
   
     return (
          <Fragment>
-             <TopBar scroll={scroll} handleForm={handleForm} doForm={doForm} isOpen={isOpen} toggle={toggle} />
+             <TopBar scroll={scroll} setOpenAccount={setOpenAccount} openAccount={openAccount} isOpen={isOpen} toggle={toggle} />
 
               
           {props.children} 
