@@ -16,7 +16,7 @@ import 'react-multi-carousel/lib/styles.css';
 import 'aos/dist/aos.css'; 
 import { getStores, StoreProvider } from '../stores/stores';  
 import Responder  from '../services/Beedy';
-import ChatWindow  from '../services/Chatter';
+// import ChatWindow  from '../services/Chatter';
 // import { Responder } from '../services/Beedy';
 // import { ThemeProvider } from '@material-ui/core/styles';
 // import CssBaseline from '@material-ui/core/CssBaseline';
@@ -50,7 +50,7 @@ export default function MyApp(props) {
       {/* <button onClick={() =>Beedy('warning', 'is it working')} >Click </button> */}
       <Responder />
       <StoreProvider value={store}> 
-        <ChatWindow {...pageProps} />
+        {/* <ChatWindow {...pageProps} /> */}
         <Component {...pageProps} />
       </StoreProvider>
       {/* <ThemeProvider theme={theme}>
