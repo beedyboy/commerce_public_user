@@ -86,7 +86,7 @@ const columns = [
 					{ text: '5', value: 5},
 					{ text: '10', value: 10},
 					{ text: '20', value: 20},
-					{ text: 'All', value: data.length}
+					{ text: 'All', value: data && data.length}
 					]
                     })}
                     search

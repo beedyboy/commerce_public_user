@@ -141,9 +141,9 @@ class UserStore {
      }
    })
    .catch(err => {
-    console.log('getSellerProfile', err.code);
-    console.log('getSellerProfile', err.message);
-    console.log('getSellerProfile', err.stack);
+    console.log('getStaff', err.code);
+    console.log('getStaff', err.message);
+    console.log('getStaff', err.stack);
    });
   } catch(e) {
  console.error(e);
@@ -161,9 +161,9 @@ class UserStore {
      }
    })
    .catch(err => {
-    console.log('inviteAFriend', err.code);
-    console.log('inviteAFriend', err.message);
-    console.log('inviteAFriend', err.stack);
+    console.log('saveStaff', err.code);
+    console.log('saveStaff', err.message);
+    console.log('saveStaff', err.stack);
    });
   } catch(e) {
  console.error(e);

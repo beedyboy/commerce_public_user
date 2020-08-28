@@ -1,5 +1,6 @@
-import { decorate, observable, action} from "mobx"  
+import { observable, action} from "mobx"  
 import api from "../services/APIService"; 
+import { Beedy } from "../services/Beedy";
 
 
 class AuthStore {
@@ -12,6 +13,7 @@ class AuthStore {
   @observable isAuth = false;
   @observable registered = false;
   @observable error = null;
+  @observable logging = false;
   @observable loading = false;
   @observable emailExist = false; 
   @observable profiles = [];
@@ -108,20 +110,21 @@ class AuthStore {
 	console.error(e);
    }
   }
-  
-
+   
    
  @action login = (payload) => {
     try {
-		  this.loading = true;
+		  this.logging = true;
     this.error = null;
     api.post('auth/auth', payload).then( res => { 
       if(res.data.status === 200) { 
-        this.loading = false;  
+        this.logging = false;  
         this.id = res.data.user[0].id;
         this.token = res.data.user[0].buyer_token; 
         this.preferred = res.data.user[0].preferred; 
         this.isAuth = true;  
+      } else {
+        Beedy('error', res.data.msg);
       }
     })
     .catch(err => {

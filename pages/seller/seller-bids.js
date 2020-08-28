@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useMobxStores } from "../../stores/stores";
 import ListCard from '../../components/Product/Card/ListCard';
 import { Row, Card, CardHeader, CardBody, NavLink } from 'reactstrap';
-import { SellerLayout, BuyerLayout } from '../../templates';
+import { SellerLayout } from '../../templates';
 import BidList from '../../components/Bid/BidList';
 
 
@@ -20,7 +20,7 @@ import BidList from '../../components/Bid/BidList';
          <Head>
           <title>Bids | Seller</title> 
          </Head>
-         <BuyerLayout>
+         <SellerLayout>
            <Card className="mt-3 mb-3">
              <CardHeader>
                <h3>Bids </h3>
@@ -31,7 +31,7 @@ import BidList from '../../components/Bid/BidList';
              </CardBody>
            </Card> 
 
-         </BuyerLayout>
+         </SellerLayout>
       </Fragment>
     )
 } 

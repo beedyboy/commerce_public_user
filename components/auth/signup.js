@@ -17,9 +17,8 @@ const schema = {
     }
   };
  const SignUp = () => {   
-  const { authStore } = useMobxStores(); 
-   
-    const {  createBuyer, createSeller } = authStore;
+  const { authStore } = useMobxStores();  
+    const {  createBuyer, createSeller, loading } = authStore;
     const [screen, setScreen] = useState(false);
     const [account, setAccount] = useState('Buyer');
     const [formState, setFormState] = useState({
@@ -100,14 +99,15 @@ const schema = {
             </Container>
         </Fragment>
     }
-   if(screen !== true) {
-     {chooseAccount()}
-   }
-        return ( 
-            <div>
+  return ( 
+            <Fragment>
+              {screen !== true ? 
+               chooseAccount()
+                :
+                <>
+                
                 <Form onSubmit={handleSubmit} noValidate autoComplete="false">
-                 <h3>Sign Up</h3>
-
+                 
                 <FormGroup>
                 <Label>Email address</Label>
                     <Input type="email" name="email" onChange={handleChange}
@@ -132,10 +132,17 @@ const schema = {
             </FormFeedback>
                 </FormGroup> 
 
-                <Button type="submit" color="primary" disabled={!formState.isValid} className=" btn-block">Register</Button>
+                <Button type="submit" color="primary" disabled={!formState.isValid} className=" btn-block">
+                  {loading ? (
+                    <span> Connecting...  <i className="fa fa-spinner"></i></span>
+                    ): 'Register'}</Button>
                 
             </Form>
-            </div>
+          
+
+                </>
+            }
+            </Fragment>
             
         );
 

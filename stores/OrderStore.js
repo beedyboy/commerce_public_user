@@ -3,6 +3,7 @@ import {  observable, action, computed } from "mobx"
 import api from "../services/APIService";
 import Storage from "../services/Storage";
 import { Beedy } from "../services/Beedy";
+import CookieService from "../services/CookieService";
 
 class OrderStore {  
   
@@ -64,9 +65,12 @@ class OrderStore {
    @action  sellerBidsById = () => {
    try {
 	 this.loading = true;
-    api.get('ordering/seller/bids').then( res => {  
-          this.sellerBids = res.data.data;
+    api.get('ordering/seller/bids').then( res => {   
           this.loading = false; 
+          if(res.data.status === 200) {
+            this.sellerBids = res.data.data;
+          }
+          console.log( res.data.data)
     })
     .catch(err => {
      console.log('sellerBidsById', err.code);
@@ -167,7 +171,7 @@ class OrderStore {
       this.sending = false;
       if(res.data.status === 500) {
         Beedy('error', res.data.msg);
-        Storage.logout();
+        CookieService.logout();
       }
      else  if(res.data.status === 200) {
       this.saved = true;
@@ -223,7 +227,7 @@ class OrderStore {
       this.sending = false;
       if(res.data.status === 500) {
         Beedy('error', res.data.msg);
-        Storage.logout();
+        CookieService.logout();
       }
      else  if(res.data.status === 200) {
       this.saved = true;
@@ -245,8 +249,7 @@ class OrderStore {
 }
   @computed get auction() {
     return Object.keys(this.bidAuction || {}).map(key => ({...this.bidAuction}));
-  }
-   
+  } 
 
 }
 

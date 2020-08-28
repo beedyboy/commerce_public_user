@@ -25,7 +25,7 @@ const schema = {
 const Login = props => {  
     const { initial_data, toggle } = props; 
     const { authStore } = useMobxStores(); 
-    const { isAuth, login, id, preferred, token: buyer_token, loginSuccessful } = authStore;
+    const { isAuth, login, id, preferred, token: buyer_token, loginSuccessful, logging } = authStore;
     const [formState, setFormState] = useState({
         isValid: false,
       values: {
@@ -123,8 +123,7 @@ const Login = props => {
     
     return (
             <Form onSubmit={handleSubmit} noValidate autoComplete="false">
-                 <h3>Sign In</h3>
-
+               
                 <FormGroup>
                 <Label>Email address</Label>
                     <Input type="email" name="email" onChange={handleChange}
@@ -149,7 +148,11 @@ const Login = props => {
             </FormFeedback>
                 </FormGroup> 
 
-                <Button type="submit" color="primary" disabled={!formState.isValid} className=" btn-block">Submit</Button>
+                <Button type="submit" color="primary" disabled={!formState.isValid} className=" btn-block">
+                   {logging ? (
+                    <span> Connecting...  <i className="fa fa-spinner"></i></span>
+                    ): 'Login'}
+                </Button>
                 <p className="forgot-password text-right">
                     Forgot <span>password</span>
                 </p>
