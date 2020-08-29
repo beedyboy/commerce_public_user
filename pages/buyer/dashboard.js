@@ -1,11 +1,30 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Container, Row, Col, Card, Button, CardBody } from 'reactstrap';
 import Head from 'next/head';  
-import BuyerLayout from '../../templates/Buyer/components/Layout/BuyerLayout';
-
- 
+import BuyerLayout from '../../templates/Buyer/components/Layout/BuyerLayout'; 
+import { useMobxStores } from '../../stores/stores';
 
 const BuyerBoard = () => {
+    const { dashboardStore } = useMobxStores();
+    const { buyerDashboard, buyerStat } = dashboardStore;
+    const [data, setData] = useState({
+        bids: 0,
+        staffs: 0,
+        products: 0
+    })
+    useEffect(() => {
+        buyerDashboard(); 
+    }, []);
+    useEffect(() => {
+        const check = buyerStat && buyerStat;
+        return () => {
+            setData(state => ({
+                ...state,
+                products: buyerStat.products,
+                staffs: buyerStat.staffs
+            }))
+        }
+    }, [buyerStat])
     return (
         <Fragment>
             <Head>

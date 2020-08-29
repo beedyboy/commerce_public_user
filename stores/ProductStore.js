@@ -116,8 +116,7 @@ class ProductStore {
     });
   }
  @action getProductById = (id) => {
-  try {
-  console.log(id)
+  try { 
     api.get('product/' + id).then( res => {
       if(res.data.status === 200) { 
         this.product = res.data.data[0];

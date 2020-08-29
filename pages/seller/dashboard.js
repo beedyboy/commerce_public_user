@@ -1,9 +1,30 @@
-import React, { Fragment } from 'react'
-import { Container, Row, Col, Card, Button, CardBody } from 'reactstrap'; 
+import React, { Fragment, useEffect, useState } from 'react'
+import { Container, Row, Col, Card, Button, CardBody } from 'reactstrap';
 import Head from 'next/head';  
 import SellerLayout from '../../templates/Seller/components/Layout/SellerLayout';
-
+import { useMobxStores } from '../../stores/stores';
+ 
 const SellerBoard = () => {
+ const { dashboardStore } = useMobxStores();
+const { sellerDashboard, sellerStat } = dashboardStore;
+const [data, setData] = useState({
+    bids: 0,
+    staffs: 0,
+    products: 0
+})
+useEffect(() => {
+    sellerDashboard(); 
+}, []);
+useEffect(() => {
+    const check = sellerStat && sellerStat;
+    return () => {
+        setData(state => ({
+            ...state,
+            products: sellerStat.products,
+            staffs: sellerStat.staffs
+        }))
+    }
+}, [sellerStat]) 
     return (
         <Fragment>
            <Head>
@@ -31,7 +52,7 @@ const SellerBoard = () => {
                             <div className="card-block">
                                 <h6 className="m-b-20">Total Product</h6>
                                 <h2 className="text-right"><i className="fa fa-cart-plus f-left"></i>
-                                <span>48 </span> </h2>
+                                <span>{data.products} </span> </h2>
                                     <p className="m-b-0">Out of stock <span className="f-right">351</span></p>  
                             </div>
                         </Card>

@@ -23,10 +23,10 @@ const ListCard = props => {
                    <div className="flip-card">
                    <div className="flip-content">
                 <div className="flip-front">
-               <CardImg top width="100%" style={{height: '200px'}} src={getImages[0]}
+               <CardImg top width="100%" style={{height: '280px', maxHeight: '280px', width: '100%'}} src={getImages[0]}
                 alt={product.product_name} />  
                     {/* <CardTitle>{product.product_name}</CardTitle>  */}
-                    <p className={styles.price}>{product.price}</p>
+                    {/* <p className={styles.price} style={{marginTop: '201px'}}>{product.price}</p> */}
                     <div className={styles.rating}><NoactionStar total="4" /></div>
                      
                 </div> 
@@ -44,14 +44,11 @@ const ListCard = props => {
                 </div>
                </div>
                    </div>
-                   <Link href={`/home/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/home/${product.product_name}/${product.id}-${product.catName}`}>
+                   <Link href={`/home/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/home/${product.product_name}/${product.id}-${product.catName}`} >
                   
-                  <a>{product.product_name}</a>
+                  <a className="link-bold">{product.product_name}</a>
                </Link>
-                   {/* <Link href={`/product/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/product/${product.product_name}/${product.id}-${product.catName}`}>
-                  
-                     <a>{product.product_name}</a>
-                  </Link> */}
+                   
                </CardBody>
                 </Card>
             </Col>

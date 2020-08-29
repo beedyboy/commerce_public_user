@@ -83,11 +83,14 @@ class OrderStore {
   }
 
   @action  buyerBidsById = () => {
-   try {
+   try {  
      this.loading = true;
-    api.get('ordering/buyer/bids').then( res => {  
-          this.buyerBids = res.data.data;
+    api.get('ordering/buyer/bids').then( res => { 
           this.loading = false; 
+           if(res.data.status === 200) { 
+          this.buyerBids = res.data.data;
+           }
+           console.log( res.data)
     })
     .catch(err => {
      console.log('buyerBidsById', err.code);

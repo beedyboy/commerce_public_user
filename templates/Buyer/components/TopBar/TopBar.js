@@ -80,9 +80,9 @@ const createSeller = () => {
                 </div>
               </div>
               <ul className="menu">
-              <li><Link href="/"><a>Blogs</a></Link></li>
-              <li><Link href="/"><a>Contact</a></Link></li>
-              <li><Link href="/"><a>Product</a></Link></li>
+              <li><Link href="/"><a>Home</a></Link></li>
+              <li><Link href="/buyer/buyer-bids"><a>Bids</a></Link></li>
+              <li><Link href="/"><a>Orders</a></Link></li>
               </ul>
               <ul className="right_bar">
               <li><Link href="/"><a><i className="fa fa-bell"></i></a></Link></li>

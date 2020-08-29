@@ -56,7 +56,7 @@ const SellerCard = props => {
                    </div>
                    <Link href={`/product/${linker(product.product_name)}/${product.id}-${linker(product.catName)}`} as={`/product/${product.product_name}/${product.id}-${product.catName}`}>
                   
-                     <a>{product.product_name}</a>
+                     <a className="link-bold">{product.product_name}</a>
                   </Link>
                 
                </CardBody>

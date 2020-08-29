@@ -59,7 +59,7 @@ const linker = (data) => {
 const columns = [
 	{dataField: "stock_name", text: "Stock Name"},
     {dataField: "Seller",
-     text: "shop_name",
+     text: "Seller",
      hidden: user === "seller" ? true : false
     }, 
 	{dataField: "created_at", text: "Date Created"},
@@ -79,6 +79,16 @@ const columns = [
 				keyField="id"
 				data={data}
 				columns={columns}
+                 search
+                   
+            > 
+                  {
+                props => (
+                    <div>
+                        <h3>Type to search</h3>
+                        <SearchBar {...props.searchProps} />
+                        <hr />
+                        <BootstrapTable  noDataIndication="Bids list is Empty"
 				filter={ filterFactory()} 
 				pagination={paginatorFactory({					 
 					showTotal: true,
@@ -89,15 +99,6 @@ const columns = [
 					{ text: 'All', value: data && data.length}
 					]
                     })}
-                    search
-            > 
-                  {
-                props => (
-                    <div>
-                        <h3>Type to search</h3>
-                        <SearchBar {...props.searchProps} />
-                        <hr />
-                        <BootstrapTable
                           { ...props.baseProps }
 		            	/>
                     </div>

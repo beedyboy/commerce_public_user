@@ -1,39 +1,48 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Row, Container, Col, Badge, Button, Card, CardBody } from 'reactstrap';
 import ReactHtmlParser from 'react-html-parser'; 
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import Head from 'next/head';  
 import { observer } from 'mobx-react'   
 import { useMobxStores } from '../../stores/stores';
 import { MainLayout } from '../../templates'; 
-import { Chatter } from "../../services/Chatter";
+// import { Chatter } from "../../services/Chatter";
 import shortId from 'short-id';
 import Carousel from "react-multi-carousel";
 import Link from 'next/link';
 import styles from './productview.module.css' 
-import { FaRainbow } from 'react-icons/fa';
+import UAParser from 'ua-parser-js';
 import ListCard from '../../components/Product/Card/ListCard';
 import { isMobile } from 'react-device-detect';
+import BuyerCard from '../../components/Product/Card/BuyerCard';
+ 
 const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 3,
+      partialVisibilityGutter: 40,
       slidesToSlide: 3 // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 2,
+      partialVisibilityGutter: 30,
       slidesToSlide: 2 // optional, default to 1.
     },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-      slidesToSlide: 1 // optional, default to 1.
-    }
+    tablet: {
+        breakpoint: {
+          max: 1024,
+          min: 464
+        },
+        items: 2,
+        partialVisibilityGutter: 30
+      }
   };
   
-const ProductView = ({view}) => { 
-    //  const router = useRouter();
+const ProductView = props => { 
+    const {view} = props; 
+    let deviceType;
+    
     const { productStore, stockStore, orderStore } = useMobxStores();
     const { product, getProductById, homeProducts } = productStore; 
     const { allProductStocks:stocks, productStock } = stockStore; 
@@ -57,8 +66,19 @@ const ProductView = ({view}) => {
         const id = second.split("-")[0];
         getProductById(id);
         productStock(id); 
+       
     }, [])
-     
+    useEffect(() => {
+        if(typeof window !== "undefined") {
+            const userAgent = window.navigator.userAgent;
+            const parser = new UAParser();
+            parser.setUA(userAgent)
+            const result = parser.getResult();
+            deviceType = (result.device && result.device.type) || "desktop"
+            console.log('dt', {deviceType})
+        }
+       
+    }, []);
     let count = homeProducts.length;
   useEffect(() => {
     const rp = product && product.product_name;  
@@ -89,7 +109,7 @@ const ProductView = ({view}) => {
 
   const defaultStock = stockData => {
      const result = stockData.filter(d => d.featured === 'NO');
-     console.log({result});
+    //  console.log({result});
      if (result.length > 0) {
         pickStock(result.id);
      } else {
@@ -279,7 +299,8 @@ const placeBid = (stock_id, shop_id,) => {
                                    <h5>Seller Information</h5>
                                 <hr />
                                  <span className={`text-uppercase text-muted ${styles.brand}`}>{data.shopName ? data.shopName : ''}</span>
-                                <Link href="/"><a>Visit Store</a></Link>
+                                <Link href="/"><a className="link-bold">Visit Store</a></Link>
+                                <br />
                             <Button className="btn btn-success" onClick={() => startChat(data.seller)} type="button">Contact Seller</Button>
                                    </CardBody>
                                </Card>
@@ -303,28 +324,59 @@ const placeBid = (stock_id, shop_id,) => {
         </Col>
     </Row> 
         <div data-aos="fade-up">
-        <Carousel
+       {count > 0 ?
+        
+        <>  <Carousel
+        arrows
+            ssr
+            partialVisbile
+            deviceType={deviceType}
+            itemClass="image-item"
+            responsive={responsive}
+            autoPlay={isMobile ? false : true}
+            autoPlaySpeed={1000}
+            keyBoardControl={true}
+            customTransition="all .5"
+            transitionDuration={500} 
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+    > 
+              {homeProducts && homeProducts.map((product) =>
+            <BuyerCard product={product} key={product.id}  /> 
+            )}
+       
+      
+    </Carousel>  </>
+            : 
+            ( 
+             
+                <h1>
+                Product is empty at the moment
+            </h1>
+            )
+}
+        
+        {/* <Carousel
             swipeable={true}
             draggable={false}
             showDots={true}
             responsive={responsive}
-            ssr={true} // means to render carousel on server-side.
+            ssr={false} // means to render carousel on server-side.
             infinite={true}
-            autoPlay={isMobile ? true : false}
+            autoPlay={isMobile ? false : true}
             autoPlaySpeed={1000}
             keyBoardControl={true}
             customTransition="all .5"
             transitionDuration={500}
-            containerClass="carousel-container"
+            // containerClass="carousel-container"
             removeArrowOnDeviceType={["tablet", "mobile"]}
-            // deviceType={props.deviceType}
-            dotListClass="custom-dot-list-style"
-            itemClass="carousel-item-padding-40-px"
+            deviceType={deviceType}
+            // dotListClass="custom-dot-list-style"
+            // itemClass="carousel-item-padding-40-px"
                 >  
 {count > 0 ?
         <>
-            {homeProducts && homeProducts.map((product) =>
-            <ListCard product={product} key={product.id} /> 
+              {homeProducts && homeProducts.map((product) =>
+            <BuyerCard product={product} key={product.id}  /> 
             )}
         </>
             : 
@@ -336,16 +388,8 @@ const placeBid = (stock_id, shop_id,) => {
             </Col>
             )
             }
-    {/* <div>
-    <figure className="img-wrap">
-                <img src="/assets/images/img_3.jpg" alt="Free website template" className="img-fluid mb-3"/>
-            </figure>
-            <div className="p-3 text-center room-info">
-                <h2>Product Three</h2>
-                <span className="text-uppercase letter-spacing-1">250$ / per kg</span>
-            </div>  
-    </div> */}
-        </Carousel>
+    
+        </Carousel>  */}
         </div>  
     </CardBody>  
     </Card>
@@ -362,6 +406,7 @@ const placeBid = (stock_id, shop_id,) => {
 }
 
 ProductView.getInitialProps = async ({ query }) => {
+  
     return {view: query.view}
   }
 

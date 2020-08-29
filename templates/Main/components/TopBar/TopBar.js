@@ -28,8 +28,8 @@ const TopBar = ({openAccount, openSideBar, setOpenAccount, isOpen, toggle, scrol
 
     const logout = () => Storage.logout();
     const initial_data = {  
-    referred: true,
-    goto: 'SELLERS'
+    referred: false,
+    goto: ''
     }  
 
     const switcher = () => {

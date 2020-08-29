@@ -8,6 +8,7 @@ import OrderStore from './OrderStore';
 import ProductStore from './ProductStore';
 import StockStore from './StockStore';
 import UserStore from './UserStore';
+import DashboardStore from './DashboardStore';
 
 const isServer = typeof window === 'undefined';
 // useStaticRendering(isServer);
@@ -25,7 +26,8 @@ export  function getStores(initialData = { productStore: {}, categoryStore: {}, 
             chatStore: new ChatStore(initialData.chatStore),
             locationStore: new LocationStore(initialData.locationStore),
             orderStore: new OrderStore(initialData.orderStore),
-            userStore: new UserStore(initialData.userStore)
+            userStore: new UserStore(initialData.userStore),
+            dashboardStore: new DashboardStore(initialData.dashboardStore)
         };
     }
     if(!store) {
@@ -37,7 +39,8 @@ export  function getStores(initialData = { productStore: {}, categoryStore: {}, 
             chatStore: new ChatStore(initialData.chatStore),
             locationStore: new LocationStore(initialData.locationStore),
             orderStore: new OrderStore(initialData.orderStore),
-            userStore: new UserStore(initialData.userStore)
+            userStore: new UserStore(initialData.userStore),
+            dashboardStore: new DashboardStore(initialData.dashboardStore)
         };
     }
     return store;
