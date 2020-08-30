@@ -110,12 +110,13 @@ const renderSuggestions = () =>
     return (
          <Fragment>
                         
-            <section  className="site-hero overlay" style={{backgroundImage: `url(/assets/images/hero_5.jpg)`}} data-stellar-background-ratio="0.5" id="section-home">
+            <section  className="site-hero overlay" style={{backgroundImage: `url(/assets/images/banner.jpg)`}} data-stellar-background-ratio="0.5" id="section-home">
             
             <div className="container">
             <div className="row site-hero-inner justify-content-center align-items-center">
             <div className="col-md-10 text-center" data-aos="fade-up">
-            <h1 className="heading">Stay With Us &amp; Relax</h1>
+            <h1 className="heading">Smile</h1>
+            <h3 className="text-white font-weight-bold" data-aos-delay="200">what more could you ask for after every transaction</h3>
             </div>
             </div>
             </div>
@@ -193,7 +194,7 @@ const renderSuggestions = () =>
             </Container>
             </section>
  
-            <section className="py-5 bg-light" id="section-about">
+            <section className="py-2 bg-light" id="section-about">
             <Container>
             <Row className="align-items-center">
                 <Col md="12" lg={{ size: 7, order: 2}} className="position-relative mb-5 ml-auto" data-aos="fade-up">
@@ -207,10 +208,10 @@ const renderSuggestions = () =>
             </Row>
             </Container>
             </section>
-
+            <section className="py-2 bg-light" id="section-about">
             <Container className="container section" id="section-team">
-            <Row  className="justify-content-center text-center mb-5">
-            <Col md="7" className="mb-5">
+            <Row  className="justify-content-center text-center mb-2">
+            <Col md="7" className="mb-1">
                 <h2 className="heading" data-aos="fade-up">Featured Products</h2>
             </Col> 
             </Row>
@@ -231,74 +232,83 @@ const renderSuggestions = () =>
                   )
                   }
 
-                </Row>
+                </Row> 
+            </Container> 
+            </section>
+    {/* get started  */}
+            <section className="py-2 bg-light" id="section-about">
+                <Container>
+                    <Row>
+                        <Col md="6">   
+                    <figure className="img-wrap">
+                    <img src="/assets/images/buyer.jpg" alt="Free website template"  className="img-fluid rounded mb-3"/>
+                    </figure>
+                    <div className="p-3 text-center room-info">
+                        Are you interested in getting amazing stuffs!!!
+                        <p>
+                        Click the below buttton now
+                        </p> 
+                    <Button color="info"  className="text-uppercase letter-spacing-1">Be a Buyer</Button>
+                        
+                    </div> 
+                    </Col>
 
-
-            </Container>
+                        <Col md="6">
+                        <figure className="img-wrap">
+                    <img src="/assets/images/signing-shipping-forms-for-large-box.jpg" alt="Free website template" className="img-fluid mb-3"/>
+                    </figure>
+                    <div className="p-3 text-center room-info">
+                       Do you know you are just a click away from being a seller?
+                        <p>
+                        Oh :) what are you waiting for?  
+                        </p> 
+                    <Button color="info"  className="text-uppercase letter-spacing-1">Get started</Button>
+                        
+                    </div>  
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
 
 
             <section className="section" id="section-rooms">
             <Container>
-            <Row className="justify-content-center text-center mb-5">
-            <Col md="7"> 
-                <h2 className="heading" data-aos="fade-up">Trending &amp; Products</h2>
-                <p data-aos="fade-up" data-aos-delay="100">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+            <Row className="justify-content-center text-center mb-1">
+            <Col md="12"> 
+                <h2 className="heading" data-aos="fade-up">Trending Products</h2>
+                {/* <p data-aos="fade-up" data-aos-delay="100">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p> */}
             </Col>
             </Row>
-            <Row>
-            <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                    <a className="room">
-                    <figure className="img-wrap">
-                    <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Single Room</h2>
-                        <span className="text-uppercase letter-spacing-1">90$ / per night</span>
-                    </div>  
-                    </a>
-                </Link>
-                </Col>  
-                <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                    <a className="room">
-                    <figure className="img-wrap">
-                        <img src="/assets/images/img_1.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Family Room</h2>
-                        <span className="text-uppercase letter-spacing-1">120$ / per night</span>
-                    </div>  
-                    </a>
-                </Link>
-                </Col>  
+             <Row>
+                {count > 0 ?
+                <>
+                    {homeProducts && homeProducts.map((product) =>
+                    <ListCard product={product} key={product.id} /> 
+                    )}
+                </>
+                    : 
+                   ( 
+                   <Col md="12" data-aos="fade-up">
+                        <h1>
+                        Product is empty at the moment
+                    </h1>
+                   </Col>
+                  )
+                  }
 
-                <Col md="6" lg="4" data-aos="fade-up">
-                <Link href="/"> 
-                   <a className="room">
-                   <figure className="img-wrap">
-                        <img src="/assets/images/img_3.jpg" alt="Free website template" className="img-fluid mb-3"/>
-                    </figure>
-                    <div className="p-3 text-center room-info">
-                        <h2>Presidential Room</h2>
-                        <span className="text-uppercase letter-spacing-1">250$ / per night</span>
-                    </div>  
-                   </a>
-                </Link>
-                </Col>  
-            </Row>
-            </Container>  
+                </Row>
+         </Container>  
             </section>
 
             <section className="section bg-image overlay" style={{backgroundImage: `url(/assets/images/hero_4.jpg)`}}> 
             <Container>
             <Row className="align-items-center">
                 <Col md="6" lg="12" className="text-center mb-4 mb-md-0 text-md-left" data-aos="fade-up">
-                <h2 className="text-white font-weight-bold">A Best Place To Stay. Reserve Now!</h2>
+                <h2 className="text-white font-weight-bold">Don't enjoy all the luxuries alone</h2>
                 </Col>
                 <Col md="6" lg="12" className="text-center text-md-right" data-aos="fade-up" data-aos-delay="200">
                <Link href="#">
-               <a className="btn btn-outline-white-primary py-3 text-white px-5" data-toggle="modal" data-target="#reservation-form">Reserve Now</a>
+               <a className="btn btn-outline-white-primary py-3 text-white px-5" data-toggle="modal" data-target="#reservation-form">Tell a friend Now</a>
                </Link>
                 </Col>
             </Row>

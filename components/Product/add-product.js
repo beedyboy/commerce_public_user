@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect, useRef } from "react";   
 import shortId from 'short-id';
 import { Row, Col, Form, Card, CardHeader, CardBody, FormGroup, Input, Label, FormText, Button } from "reactstrap";
+import PerfectScrollBar from 'react-perfect-scrollbar'
 import Select from 'react-select';
 import usePlacesAutocomplete, {
   getGeocode,
@@ -74,11 +75,16 @@ const AddProduct = () => {
         return () => {
           refreshForm();
         }
-       }, [saved])
-      const handlePreUpload = (e, name) => {
-        e.preventDefault();  
-        mainInput.current.click();
-      }
+       }, [saved]);
+       console.log({saved})
+    const handlePreUpload = (e) => {
+      e.preventDefault();  
+      console.log('upload now')
+      mainInput.current.click();
+    }
+    const handleFileUpload = () => { 
+      console.log('upload now') 
+    }
     const handleTag = e => { 
         setTags(Array.isArray(e) ? e.map(x => x.value) : []); 
         // console.log(tags);
@@ -215,8 +221,7 @@ const handleReset = () => {
         ...formState.values,
          id: '',
           name: '',  cat_id: '', available: '', location: '',  price: '',
-          packed: '', first_delivery: false, second_delivery: false, third_delivery: false, within_distance: '', within_charge:'', beyond_distance: '', beyond_charge:''
-       
+          packed: '', first_delivery: false, second_delivery: false, third_delivery: false, within_distance: '', within_charge:'', beyond_distance: '', beyond_charge:'' 
       } 
     }));
      
@@ -345,8 +350,10 @@ const handleReset = () => {
           <CardBody>
           <Row>      
             <Col md="12" sm="12">
-             
-                   {buildImgTag()} 
+             <PerfectScrollBar>
+             {buildImgTag()} 
+             </PerfectScrollBar>
+                   
                 <input
             type="file"
               accept="image/*"
@@ -367,15 +374,15 @@ const handleReset = () => {
               ref={mainInput}
             /> */}
             <Label for="main"> 
-              <Button type="button" color="secondary"
-                    size="small" 
-                    aria-label="add"
-                    onClick={(e) => handlePreUpload(e, 'main')}
-                    variant="extended">
-                    <span> Choose Main File  <i className="fa fa-camera"></i></span>
+             
+             </Label> 
+              <Button color="primary" type="button" onClick={handleFileUpload}>Try</Button>
+           
+              <Button type="button" color="secondary" 
+                    onClick={handlePreUpload}>
+                  <span> Choose Main File  <i className="fa fa-camera"></i></span>
                
-              </Button>
-            </Label>                
+              </Button>               
             </Col>              
          </Row>
           {editorLoaded ? (

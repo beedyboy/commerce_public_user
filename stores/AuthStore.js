@@ -120,7 +120,7 @@ class AuthStore {
       if(res.data.status === 200) { 
         this.logging = false;  
         this.id = res.data.user[0].id;
-        this.token = res.data.user[0].buyer_token; 
+        this.token = res.data.token; 
         this.preferred = res.data.user[0].preferred; 
         this.isAuth = true;  
       } else {

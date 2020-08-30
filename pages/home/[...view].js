@@ -326,7 +326,8 @@ const placeBid = (stock_id, shop_id,) => {
         <div data-aos="fade-up">
        {count > 0 ?
         
-        <>  <Carousel
+        <> 
+         <Carousel
         arrows
             ssr
             partialVisbile

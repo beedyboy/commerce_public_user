@@ -29,82 +29,59 @@ import { observer } from 'mobx-react';
     }
     return (
          
-<footer className="section footer-section">
-    <Container>
-        <Row className="mb-4">
-            <Col md="3" className="mb-5">
-                <ul className="list-unstyled link">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Terms &amp; Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Rooms</a></li>
-                </ul>
-            </Col>
-            <Col md="3" className="mb-5">
-                <ul className="list-unstyled link">
-                    <li><a href="#">The Rooms &amp; Suites</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Restaurant</a></li>
-                </ul>
-            </Col>
-            <Col md="3" className="mb-5 pr-md-5 contact-info">
-            <p>
-                <span className="d-block">
-                <ion-icon name="location-outline"></ion-icon>Address:
-                    {/* <span className="ion-ios-location h5 mr-3 text-primary"></span>Address: */}
-                    </span>
-                     <span> 198 West 21th Street, <br /> Suite 721 New York NY 10016 </span>
-            </p>
-            <p>
-                <span className="d-block">
-                <ion-icon name="phone-portrait-outline"></ion-icon>Phone:
-                    {/* <span className="ion-ios-telephone h5 mr-3 text-primary"></span>Phone: */}
-                    </span>
-             <span> (+1) 435 3533</span>
-          </p>
-            <p>
-                <span className="d-block">
-                    <span className="ion-ios-email h5 mr-3 text-primary"></span>Email:
-                    <ion-icon name="mail-outline"></ion-icon>Email:
-                    </span>
-             <span>
-                  <a href="https://colorlib.com/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="4f262129200f36203a3d2b20222e2621612c2022">[email&#160;protected]</a>
-            </span>
-            </p>
-            </Col>
-        
-            <Col md="3" className="mb-5">
-            <p>Invite a friend</p>
-            <Form className="footer-newsletter">
-            <div className="form-group">
-                <Input type="email" name="email" onChange={(event) => setEmail(event.target.value)} className="form-control" placeholder="Email..." />
-                <Button type="button" onClick={(e) => sendInvite(e)} className="btn"><span className="fa fa-paper-plane"></span></Button>
-            </div>
-            </Form>
-            </Col>
-        </Row>
-        <Row className="pt-5">
-            <Col md="8">
-            <p className="text-left"> 
-                Copyright &copy;
-                {new Date().getFullYear()}
-                  All rights reserved | This template is made with <i className="fa fa-heart text-primary" aria-hidden="true"></i> by <a href="https://devprima.com/" target="_blank">online shopping</a>
-
-        </p>
-            </Col>
-            <Col md="4">
-            <p className="text-right social">
+<footer> 
+       <section className="foot-section footer-section">
+       <Row>
+            <Col md="4" className="mb-2">
+                <h2 className="heading text-white">About Us</h2>
+                <span className="text-center"> With our vast varity of certified sellers,
+                we are the trusted stop-shop for better shopping experience.
+                 Gone through our site yet? You totally should, we fix you up real good!
+                </span>
+                <p className="text-center social">
                 <a href="#"><span className="fa fa-tripadvisor"></span></a>
                 <a href="#"><span className="fa fa-facebook"></span></a>
                 <a href="#"><span className="fa fa-twitter"></span></a>
                 <a href="#"><span className="fa fa-linkedin"></span></a>
                 <a href="#"><span className="fa fa-vimeo"></span></a>
-</p>
+            </p>
+            </Col>
+            <Col md="4" className="mb-2">
+            <h2 className="heading text-white">Links</h2>
+            <ul className="list-unstyled link text-center">  
+                    <li><a href="#">Terms &amp; Conditions</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Sponsored Products</a></li>
+                </ul>
+            </Col>
+          
+            <Col md="4" className="mb-2"> 
+            <h2 className="heading text-white">Invite a friend</h2>
+            <Form className="footer-newsletter">
+            <div className="form-group  text-center">
+                <Input type="email" name="email" onChange={(event) => setEmail(event.target.value)} className="form-control" placeholder="Email..." />{" "}
+                <Button type="button" onClick={(e) => sendInvite(e)} className="btn">
+                    <span className="fa fa-paper-plane"></span>
+                </Button>
+            </div>
+            </Form>
             </Col>
         </Row>
-    </Container> 
-  
+       </section>
+    
+        <Row className="pt-5 footer-downpart">
+            <Col md="8">
+            <p className="text-left"> 
+                Copyright &copy;
+                {new Date().getFullYear()}
+                  All rights reserved <a href="https://devprima.com/" target="_blank">online shopping</a>
+            </p>
+            </Col> 
+            <Col md="4">
+                 <img src="/assets/images/payment.jpg" alt="hey there" className="img-fluid rounded" />
+            </Col> 
+        </Row>
+   
 </footer>
   
     )

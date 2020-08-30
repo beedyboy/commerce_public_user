@@ -26,7 +26,7 @@ class DashboardStore {
           if(res.data.status === 200) { 
           this.sellerStat = res.data.data;
           }
-          console.log( res.data/data)
+          console.log( res.data.data)
        })
        .catch(err => {
         console.log('sellerDashboard', err.code);
@@ -46,7 +46,7 @@ class DashboardStore {
           if(res.data.status === 200) { 
           this.buyerStat = res.data.data;
           }
-          console.log( res.data/data)
+          console.log( res.data.data)
        })
        .catch(err => {
         console.log('buyerDashboard', err.code);

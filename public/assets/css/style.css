@@ -228,9 +228,14 @@ textarea.form-control {
 
 .section {
   padding: 7em 0; }
+  .foot-section {
+    padding: 2em 0; }
   @media (max-width: 991.98px) {
     .section {
-      padding: 3em 0; } }
+      padding: 3em 0; }
+      .foot-section {
+        padding: 1em 0; }
+     }
 
 @media (max-width: 991.98px) {
   .lead {
@@ -538,7 +543,7 @@ textarea.form-control {
     display: inline-block; }
 
 .footer-section {
-  background: #1a1a1a;
+  background: #3a3840;
   color: #fff; }
   .footer-section a {
     color: rgba(255, 255, 255, 0.7); }
@@ -557,7 +562,9 @@ textarea.form-control {
     padding: 10px; }
   .footer-section .link li {
     margin-bottom: 10px; }
-
+.footer-downpart {
+  background: #696969;
+}
 .footer-newsletter .form-group {
   position: relative; }
 
@@ -1591,13 +1598,23 @@ textarea.form-control {
 /* my own starts here */
 
 h2.heading, h3.heading {
-  font-size: 17px;
-  font-weight: 400;
-  margin: 0;
-  line-height: 1;
-  font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+  font-size: 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+    text-transform: uppercase; 
 }
 
+ 
+/* #wrapper .title-normal .title_block, #wrapper .title-normal .products-section-title {
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+} */
 
 .accounts {
     width: 300px;

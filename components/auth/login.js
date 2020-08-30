@@ -25,7 +25,7 @@ const schema = {
 const Login = props => {  
     const { initial_data, toggle } = props; 
     const { authStore } = useMobxStores(); 
-    const { isAuth, login, id, preferred, token: buyer_token, loginSuccessful, logging } = authStore;
+    const { isAuth, login, id, preferred, token: user_token, loginSuccessful, logging } = authStore;
     const [formState, setFormState] = useState({
         isValid: false,
       values: {
@@ -45,24 +45,24 @@ const Login = props => {
           if(formState.values.referred === true) {
             //goto page
             if (formState.values.goto === 'BUYERS' ) {
-              Storage.save('token', buyer_token);
+              Storage.save('token', user_token);
               Storage.save('id', id);
               Router.push('/buyer/dashboard'); 
             } else {
               Storage.save('id', id);
-              CookieService.save('access_token', buyer_token)
+              CookieService.save('access_token', user_token)
               Router.push('/seller/dashboard');
             }
           } else {
             //goto preferred 
             
             if (preferred === 'BUYER' ) {
-              Storage.save('token', buyer_token);
+              Storage.save('token', user_token);
               Storage.save('id', id);
               Router.push('/buyer/dashboard'); 
             } else {
               Storage.save('id', id);
-              CookieService.save('access_token', buyer_token)
+              CookieService.save('access_token', user_token)
               Router.push('/seller/dashboard');
             }
           

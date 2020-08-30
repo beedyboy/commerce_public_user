@@ -8,7 +8,6 @@ import { SellerLayout } from '../../templates';
 import Loading from '../../components/Suspense/Loading'; 
 import AddProduct from '../../components/Product/add-product';
 
-
  const ProductList = () => {
      const { productStore } = useMobxStores();
      const { filteredProduct, loading, myProducts } = productStore;
@@ -17,9 +16,7 @@ import AddProduct from '../../components/Product/add-product';
     //  const toggle = () => setModal(!modal);
      const toggle = tab =>  {
        if(activeTab !== tab) setActiveTab(tab);
-     }
-    //  const closeBtn = <Button className="close" onClick={toggle}>&times;</Button>;
-      
+     } 
      useEffect(() => {
          myProducts(); 
      }, []); 
@@ -40,11 +37,9 @@ import AddProduct from '../../components/Product/add-product';
                <CardBody>
             <TabContent activeTab={activeTab}>
               
-            <TabPane tabId="1">
-           
+            <TabPane tabId="1"> 
              <Row>
-               <Col md="12" className="mt-3">
-                    
+               <Col md="12" className="mt-2"> 
               {loading ? <Loading /> :
               <Fragment> { filteredProduct && filteredProduct.length < 1 ? 
             (
